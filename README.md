@@ -37,3 +37,14 @@ A blog site for bakers to browse and share recipes
   
 - About Page
   ![Mobile devices about page](./documents/images/mobile_about_page.webp)
+
+- Desktop Wireframe
+
+- Home Page
+  ![Desktop home page](./documents/images/desktop_home.webp)
+  
+- Recipe Page
+  ![Desktop recipe page](./documents/images/desktop_recipe.webp)
+  
+- About Page
+  ![Desktop About page](./documents/images/desktop_about.webp)
