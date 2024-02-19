@@ -30,6 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['8003-amy-1989-bakers-hub-qz29bz58xm.us2.codeanyapp.com',
+                 '8000-amy1989-bakershub-h22ye1sgek2.ws-eu108.gitpod.io',
                  '.herokuapp.com']
 
 
@@ -95,7 +96,8 @@ DATABASES = {
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.codeanyapp.com",
-    "https://*.herokuapp.com"
+    "https://*.herokuapp.com",
+    "https://*gitpod.io",
 ]
 
 

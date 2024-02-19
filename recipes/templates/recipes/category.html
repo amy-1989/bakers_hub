@@ -1,0 +1,17 @@
+{% extends "recipes/index.html" %}
+
+{% block page_title %}
+<h2>{{ category.title }}</h2>
+{% endblock page_title %}
+
+{% block page_content %}
+    {% block posts %}
+        {% for post in posts %}
+            <h3><a href=# ><p>{{ post.title }} </p></a></h3>
+            <p>{{post.author}}</p>
+            <small>
+                {{ post.created_on }} 
+            </small>
+        {% endfor %}
+    {% endblock posts %}
+{% endblock page_content %}
