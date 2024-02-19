@@ -7,7 +7,7 @@
 {% block content %}
     {% block posts %}
         {% for post in posts %}
-            <h3><a href=# ><p>{{ post.title }} </p></a></h3>
+            <h3><a href="{% url 'recipe_post' post.slug %}" ><p>{{ post.title }} </p></a></h3>
             <p>{{post.author}}</p>
             <small>
                 {{ post.created_on }} 
