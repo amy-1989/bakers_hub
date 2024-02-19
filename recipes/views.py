@@ -12,7 +12,7 @@ class CategoryList(generic.ListView):
 
 def recipe_category(request, category):
     posts = Post.objects.filter(
-        category__title__contains =category
+        category__title__icontains = category
     ).order_by("-created_on")
     context = {
         "category": category,

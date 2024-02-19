@@ -1,10 +1,10 @@
-{% extends "recipes/index.html" %}
+{% extends "base.html" %}
 
 {% block page_title %}
 <h2>{{ category.title }}</h2>
 {% endblock page_title %}
 
-{% block page_content %}
+{% block content %}
     {% block posts %}
         {% for post in posts %}
             <h3><a href=# ><p>{{ post.title }} </p></a></h3>
@@ -14,4 +14,4 @@
             </small>
         {% endfor %}
     {% endblock posts %}
-{% endblock page_content %}
+{% endblock %}
