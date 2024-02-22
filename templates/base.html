@@ -34,7 +34,7 @@
   <body class="d-flex flex-column h-100 main-bg">
   <header>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar navbar-expand-lg navbar-light bgNavbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}"
           ><span class="logo"
@@ -42,7 +42,7 @@
           ></a
         >
         <button
-          class="navbar-toggler"
+          class="navbar-toggler logo"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#collapsibleNavbar"
@@ -58,7 +58,7 @@
               <a
                 class="nav-link {% if request.path == home_url %}active{% endif %}"
                 aria-current="page"
-                href="#"
+                href="{% url 'home' %}"
                 >Home</a
               >
             </li>
@@ -91,9 +91,9 @@
       </div>
     </nav>
 
-  <!--Hero Image-->
-  <div><img src="../documents/images/hero_image.webp" alt="tray of baked goods" class="img-fluid"></div>
-  </header>
+    <!--Hero Image-->
+    <div class="heroImg img-fluid" alt="tray of baked goods"></div>
+    </header>
 
     <main class="flex-shrink-0 main-bg">
 

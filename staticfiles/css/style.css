@@ -2,16 +2,24 @@ body {
     background-color: rgb(255,229,250);
 }
 
+.bgNavbar {
+    background-color: rgb(212, 209, 210);
+}
+
 .logo {
     font-family: 'Dancing Script', 'Lucida Handwriting', sans-serif;
-    text-decoration-color: rgb(102,0,102);
+    color: rgb(102,0,102);
     font-size: 1.4rem;
 }
 
 .heading {
     font-family: 'Annapurna SIL', 'Times New Roman', sans-serif;
     font-weight: 700;    
-    text-decoration-color: rgb(102,0,102);
+    color: rgb(102,0,102);
+}
+
+.heroImg {
+    background-image: url("hero_image.webp");
 }
 
 .content {
