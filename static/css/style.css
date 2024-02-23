@@ -19,7 +19,6 @@ body {
 }
 
 .heroImg {
-    background-image: url("./static/images/hero_image.webp");
     width: 100vw;
     height: auto;
 }
