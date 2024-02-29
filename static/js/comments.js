@@ -26,7 +26,6 @@ for (let button of editButtons) {
   });
 }
 
-
 /**
 * Initializes deletion functionality for the provided delete buttons.
 * 

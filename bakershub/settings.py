@@ -31,7 +31,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['8003-amy-1989-bakers-hub-qz29bz58xm.us2.codeanyapp.com',
                  '8000-amy1989-bakershub-h22ye1sgek2.ws-eu108.gitpod.io',
-                 '.herokuapp.com']
+                 'https://bakers-hub-afebe583acd6.herokuapp.com/']
 
 
 # Application definition

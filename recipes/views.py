@@ -30,13 +30,25 @@ def recipe_post(request, slug):
     if request.method == "POST":
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.author = request.user
-            comment.post = post
-            comment.save()
+            parent_obj=None
+        try:
+            parent_id = int(request.POST.get("parent_id"))
+        except:
+            parent_id=None
+
+        if parent_id:
+            parent_obj = Comment.objects.get(id=parent_id)
+            if parent_obj:
+                reply_comment = comment_form.save(commit=False)
+                reply_comment.parent = parent_obj
+
+        comment = comment_form.save(commit=False)
+        comment.author = request.user
+        comment.post = post
+        comment.parent = parent_obj
+        comment.save()
 
     comment_form = CommentForm()
-
 
     return render(
         request,
@@ -47,6 +59,29 @@ def recipe_post(request, slug):
         "comment_form": comment_form,},
     )
 
+def comment_reply(request, slug, parent_id):
+    if request.method == "POST":
+       # replies=post.comments.filter()####check this filter
+        reply_form = CommentForm(data=request.POST)
+
+        if reply_form.is_valid():
+            post_id = request.POST.get('post_id')
+            parent_id = request.POST.get('parent_id')
+            post_url = request.POST.get('post_url')
+
+            reply = reply_form.save(commit=False)
+
+            reply.post = Post(id=post_id)
+            reply.parent = Comment(id=parent_id)
+            reply.save()
+        
+        reply_form=CommentForm()
+            
+
+    return  HttpResponseRedirect(reverse('recipe_post', args=[slug]))
+
+
+    
 def comment_edit(request, slug, comment_id):
     """
     view to edit comments
