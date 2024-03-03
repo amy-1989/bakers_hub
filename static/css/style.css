@@ -27,3 +27,7 @@ body {
     font-family: 'Annapurna SIL', 'Times New Roman', sans-serif;
     font-weight: 400;
 }
+
+.hidden {
+    display: none;
+}

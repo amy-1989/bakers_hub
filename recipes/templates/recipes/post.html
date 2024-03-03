@@ -3,7 +3,6 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
 <div class="masthead">
     <div class="container">
         <div class="row g-0">
@@ -51,64 +50,83 @@
     <div class="col-md-8 card mb-4  mt-3 ">
       <h3>Comments:</h3>
       <div class="card-body">
-        <!-- We want a for loop inside the empty control tags
-          to iterate through each comment in comments -->
-        {% for comment in comments %}
-        <div class="p-2 comments
+          {% for comment in comments %}
+          <div class="p-2 comments
           {% if not comment.approved and comment.author == user %}
           faded{% elif not comment.approved %} d-none{% endif %}">
-          <p class="font-weight-bold">
-            {{ comment.author }}
-            <span class="font-weight-normal">
-              {{ comment.created_on }}
-            </span> wrote:
-          </p>
-          <div id="comment{{ comment.id }}">
-            {{ comment.body | linebreaks }}
-          </div>
-          {% if not comment.approved and comment.author == user %}
-          <p class="approval">
-            This comment is awaiting approval
-          </p>
-          {% endif %}
-          {% if user.is_authenticated and comment.author == user %}
-          <button class="btn btn-edit"
-          comment_id="{{ comment.id }}">Edit</button>
-          <button class="btn btn-delete"
-          comment_id="{{ comment.id }}">Delete</button>
-          {% endif %}
-          {% for reply in comment.replies.all %}
-        <div class="p-2 comments
-          {% if not comment.approved and comment.author == user %}
-          faded{% elif not comment.approved %} d-none{% endif %}">
-          <p class="font-weight-bold">
-            {{ reply.author }}
-            <span class="font-weight-normal">
-              {{ reply.created_on }}
-            </span> wrote:
-          </p>
-          <div id="comment{{ comment.id }}">
-            {{ reply.body | linebreaks }}
-          </div>
-          {% if not comment.approved and comment.author == user %}
-          <p class="approval">
-            This reply is awaiting approval
-          </p>
-          {% endif %}
-          {% if user.is_authenticated and comment.author == user %}
-          <button class="btn btn-edit"
-          comment_id="{{ comment.id }}">Edit</button>
-          <button class="btn btn-delete"
-          comment_id="{{ comment.id }}">Delete</button>
-          {% endif %}
-        </div>
-        <!-- Our for loop ends here -->
-        {% endfor %}
-      </div>
+            <p class="font-weight-bold">
+              {{ comment.author }}
+              <span class="font-weight-normal">
+                {{ comment.created_on }}
+              </span> wrote:
+            </p>
+            <div id="comment{{ comment.id }}">
+              {{ comment.body | linebreaks }}
+            </div>
+            {% if not comment.approved and comment.author == user %}
+            <p class="approval">
+              This comment is awaiting approval
+            </p>
+            {% endif %}
+            <div class="card card-body my-2">                
+            {% if user.is_authenticated and comment.author == user %}
+            <button class="btn btn-edit"
+            comment_id="{{ comment.id }}">Edit</button>
+            <button class="btn btn-delete"
+            comment_id="{{ comment.id }}">Delete</button>
+            {% endif %}
+            {% if comment.approved %}
+            <button class="btn btn-reply" comment_id="{{ comment.id }}" type="button" data-bs-toggle="collapse" data-bs-target="#replyButton{{ comment.id }}" aria-expanded="false">Reply</button> 
+            {% endif %}
+            </div>
+              {% for reply in comment.replies.all %}
+                <div class="p-2 comments 
+                  {% if not comment.approved and comment.author == user %}
+                  faded{% elif not comment.approved %} d-none{% endif %}" >
+                  <p class="font-weight-bold">
+                    {{ reply.author }}
+                    <span class="font-weight-normal">
+                      {{ reply.created_on }}
+                    </span> wrote:
+                  </p>
+                  <div id="comment{{ comment.id }}">
+                    {{ reply.body | linebreaks }}
+                  </div>
+                  {% if not reply.approved and reply.author == user %}
+                  <p class="approval">
+                    This reply is awaiting approval
+                  </p>
+                  {% endif %}
+                  {% if user.is_authenticated and reply.author == user %}
+                  <button class="btn btn-edit"
+                  comment_id="{{ comment.id }}" id="replyEdit">Edit</button>
+                  <button class="btn btn-delete"
+                  comment_id="{{ comment.id }}">Delete</button>
+                  {% endif %}
+                </div>
+              {% endfor %}
+                <div class="card-body comment collapse" id="replyButton{{ comment.id }}">
+                {% if user.is_authenticated %}
+                <h3>Leave a reply:</h3>
+                <p>Posting as: {{ user.username }}</p>
+                <form id="commentForm" method="post"
+                  style="margin-top: 1.3em;">
+                  {{ comment_form | crispy }}
+                  {% csrf_token %}
+                  <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                  <button id="submitButton" type="submit"
+                    class="btn btn-signup btn-lg">Reply</button>
+                </form>
+                {% else %}
+                <p>Log in to leave a reply</p>
+                {% endif %}
+              </div>
+          </div>       
+        {% endfor %}         
     </div>
     <!-- Creating New Comments -->
     <div class="col-md-4 card mb-4 mt-3">
-        <div class="card-body">
+        <div class="card-body comment">
           {% if user.is_authenticated %}
           <h3>Leave a comment:</h3>
           <p>Posting as: {{ user.username }}</p>
@@ -123,25 +141,8 @@
           <p>Log in to leave a comment</p>
           {% endif %}
         </div>
-        <!---Replying to a comment-->
-        <div class="card-body">
-          {% if user.is_authenticated %}
-          <h3>Reply to comment:</h3>
-          <p>Posting as: {{ user.username }}</p>
-          <form id="commentForm" method="post"
-            style="margin-top: 1.3em;">
-            {{ comment_form | crispy }}
-            {% csrf_token %}
-            <input type="hidden" name="parent_id" value="{{ comment_id}}">
-            <button id="submitButton" type="submit" value="reply"
-              class="btn btn-signup btn-lg">Reply</button>
-          </form>
-          {% else %}
-          <p>Log in to leave a comment</p>
-          {% endif %}
-        </div>
       </div>
-  </div>
+    </div> 
 </div>
 <!-- Delete confirmation modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1"
@@ -167,7 +168,6 @@
     </div>
   </div>
 </div>
-
 {% endblock content %}
 
 {% block extras %}

@@ -1,10 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import F
 from cloudinary.models import CloudinaryField
 
 STATUS = ((0, "Draft"), (1, "Published"))
-
-# Create your models here.
 
 
 class Category(models.Model):
@@ -36,6 +35,9 @@ class Post(models.Model):
 
     def __str__(self):
         return f"This recipe {self.title} was created by {self.author}"
+    
+    def get_absolute_url(self):
+        return f"/post/{self.slug}/"
 
 
 class Comment(models.Model):
