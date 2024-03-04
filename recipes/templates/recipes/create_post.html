@@ -12,20 +12,19 @@
         </div>
     </div>
 </div>
-<div class="col-md-4 card mb-4 mt-3">
+<div>
     <div class="card-body comment">
       {% if user.is_authenticated %}
-      <h3>Leave a comment:</h3>
-      <p>Posting as: {{ user.username }}</p>
-      <form id="RecipePostForm" method="post"
-        style="margin-top: 1.3em;">
-        {{ comment_form | crispy }}
+      <h3>Share your Recipe!</h3>
+      <form id="RecipePostForm" method="post">
+        {{ recipe_post_form | crispy }}
         {% csrf_token %}
         <button id="submitButton" type="submit"
           class="btn btn-signup btn-lg">Submit</button>
       </form>
       {% else %}
-      <p>Log in to leave a comment</p>
+      <p>Log in to Share Your Recipe</p>
       {% endif %}
     </div>
   </div>
+  {% endblock %}

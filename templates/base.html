@@ -85,7 +85,7 @@
             {% endif %}    
           </ul>
           <span class="justify-content-end">
-            Share Your Recipes
+            <a class="nav-link {% if request.path == create_post_url %}active{% endif %}" href= "{% url 'create_post' %}">Share Your Recipes</a>
           </span>
         </div>
       </div>

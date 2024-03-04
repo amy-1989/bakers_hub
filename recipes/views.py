@@ -2,7 +2,8 @@ from django.shortcuts import render,  get_object_or_404, reverse
 from django.views import generic
 from django.http import HttpResponseRedirect
 from .models import Post, Category, Comment
-from .forms import CommentForm
+from .forms import CommentForm, RecipePostForm
+from django.contrib import messages
 
 
 class CategoryList(generic.ListView):
@@ -72,9 +73,9 @@ def comment_edit(request, slug, comment_id):
             comment.post = post
             comment.approved = False
             comment.save()
-#            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
- #       else:
-  #          messages.add_message(request, messages.ERROR, 'Error updating comment!')
+            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
+        else:
+            messages.add_message(request, messages.ERROR, 'Error updating comment!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
@@ -95,9 +96,9 @@ def reply_edit(request, slug, comment_id):
             reply.post = post
             reply.approved = False
             reply.save()
-#            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
- #       else:
-  #          messages.add_message(request, messages.ERROR, 'Error updating comment!')
+            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
+        else:
+            messages.add_message(request, messages.ERROR, 'Error updating comment!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
     
@@ -111,9 +112,9 @@ def comment_delete(request, slug, comment_id):
 
     if comment.author == request.user:
         comment.delete()
-#        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
- #   else:
-  #      messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
+        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
@@ -128,8 +129,27 @@ def reply_delete(request, slug, comment_id):
 
     if reply.author == request.user:
         reply.delete()
-#        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
- #   else:
-  #      messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
+        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
+
+
+def create_recipe_post(request):
+    if request.method == "POST":
+        recipe_post_form = RecipePostForm(data=request.POST)
+        if recipe_post_form.is_valid():
+            form = recipe_post_form.save(commit=False)
+            form.author = request.user                  
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Recipe request sent! Awaiting admin approval!")
+    
+    recipe_post_form = RecipePostForm()
+
+    return render(
+        request,
+        "recipes/create_post.html",
+        {"recipe_post_form":recipe_post_form},
+    )
+    
