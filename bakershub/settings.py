@@ -28,11 +28,12 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['8003-amy-1989-bakers-hub-qz29bz58xm.us2.codeanyapp.com',
                  '8000-amy1989-bakershub-h22ye1sgek2.ws-eu108.gitpod.io',
-                 'bakers-hub-afebe583acd6.herokuapp.com/']
+                 'bakers-hub-afebe583acd6.herokuapp.com/',
+                 ]
 
 
 # Application definition
@@ -60,11 +61,6 @@ INSTALLED_APPS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'APP': {
-            'client_id': os.environ.get("CLIENT_ID"),
-            'secret': os.environ.get("SECRET"),
-            'key': ''
-        },
         'SCOPE': [
             'profile',
             'email',
@@ -74,11 +70,15 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-SITE_ID = 1
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
+SITE_ID = 2
 
 AUTHENTICATION_BACKENDS = [
-    'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    
 ]
 
 LOGIN_REDIRECT_URL = '/'

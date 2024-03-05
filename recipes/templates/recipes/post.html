@@ -99,12 +99,13 @@
                   {% endif %}
                   {% if user.is_authenticated and reply.author == user %}
                   <button class="btn btn-edit"
-                  comment_id="{{ comment.id }}" id="replyEdit">Edit</button>
+                  comment_id="{{ comment.id }}">Edit</button>
                   <button class="btn btn-delete"
                   comment_id="{{ comment.id }}">Delete</button>
                   {% endif %}
                 </div>
               {% endfor %}
+              <!--Create Replies-->
                 <div class="card-body comment collapse" id="replyButton{{ comment.id }}">
                 {% if user.is_authenticated %}
                 <h3>Leave a reply:</h3>

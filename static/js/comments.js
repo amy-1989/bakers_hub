@@ -7,7 +7,6 @@ const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
 const deleteButtons = document.getElementsByClassName("btn-delete");
 const deleteConfirm = document.getElementById("deleteConfirm");
 
-const replyEditButton = document.getElementById("replyEdit");
 
 /**
 * Initializes edit functionality for the provided edit buttons.
@@ -25,16 +24,6 @@ for (let button of editButtons) {
     let commentContent = document.getElementById(`comment${commentId}`).innerText;
     commentText.value = commentContent;
     submitButton.innerText = "Update";
-    commentForm.setAttribute("action", `edit_comment/${commentId}`);
-  });
-}
-
-for (let button of replyEditButton) {
-  button.addEventListener("click", (e) => {
-    let commentId = e.target.getAttribute("comment_id");
-    let commentContent = document.getElementById(`comment${commentId}`).innerText;
-    commentText.value = commentContent;
-    submitButton.innerText = "Update Reply";
     commentForm.setAttribute("action", `edit_comment/${commentId}`);
   });
 }

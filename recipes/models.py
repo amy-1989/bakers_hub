@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import F
+from django.core.validators import MaxValueValidator, MinValueValidator
 from cloudinary.models import CloudinaryField
 
 STATUS = ((0, "Draft"), (1, "Published"))
@@ -65,7 +66,11 @@ class Review(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="reviewer")
     approved = models.BooleanField(default=False)
-    rating = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0, 
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(0)
+        ])
 
     def __str__(self):
         return f"{self.post}: {self.rating}"

@@ -121,7 +121,7 @@ def comment_delete(request, slug, comment_id):
 
 def reply_delete(request, slug, comment_id):
     """
-    view to delete comment
+    view to delete a reply
     """
     queryset = Post.objects.filter(status=1)
     post = get_object_or_404(queryset, slug=slug)
@@ -129,9 +129,9 @@ def reply_delete(request, slug, comment_id):
 
     if reply.author == request.user:
         reply.delete()
-        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
+        messages.add_message(request, messages.SUCCESS, 'Reply deleted!')
     else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
+        messages.add_message(request, messages.ERROR, 'You can only delete your own replies!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
