@@ -14,7 +14,7 @@ class Category(models.Model):
         ordering = ["title"]
 
     def __str__(self):
-        return f"Category {self.title}"
+        return f"{self.title}"
 
 
 class Post(models.Model):

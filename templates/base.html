@@ -38,9 +38,8 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}"
           ><span class="logo"
-            ><h1 class="logo">Recipe Hub</h1></span
-          ></a
-        >
+            ><h1 class="logo">Bakers Hub</h1></span
+          ></a>
         <button
           class="navbar-toggler logo"
           type="button"
@@ -84,7 +83,7 @@
             </li>
             {% endif %}    
           </ul>
-          <span class="justify-content-end">
+          <span class="justify-content-end navbar-light navbar-nav  nav-item">
             <a class="nav-link {% if request.path == create_post_url %}active{% endif %}" href= "{% url 'create_post' %}">Share Your Recipes</a>
           </span>
         </div>

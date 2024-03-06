@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="masthead">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-md-6 masthead-text">
+                <h1 class="post-title">Complete the form below to share you own recipe!</h1>
+            </div>           
+        </div>
+    </div>
+</div>
+<div>
+    <div class="card-body comment">
+      {% if user.is_authenticated & user.is_post.author %}
+      <h3>Edit your Recipe!</h3>
+      <form id="RecipePostForm" action = "{% url edit_recipe post.id %}" method="post">
+        {{ recipe_post_form | crispy }}
+        {% csrf_token %}
+        <button id="submitButton" type="submit"
+          class="btn btn-signup btn-lg">Update</button>
+      </form>
+      {% else %}
+      <p>Log in to Edit Your Recipe</p>
+      {% endif %}
+    </div>
+  </div>
+  {% endblock %}

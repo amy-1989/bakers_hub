@@ -1,17 +1,22 @@
 {% extends "base.html" %}
-
+{% load cloudinary %}
+{% load static %}
 {% block page_title %}
+<div>
 <h2>{{ category.title }}</h2>
+</div>
 {% endblock page_title %}
 
 {% block content %}
     {% block posts %}
+    <div>
         {% for post in posts %}
-            <h3><a href="{% url 'recipe_post' post.slug %}" ><p>{{ post.title }} </p></a></h3>
+            <h3 class="heading"><a href="{% url 'recipe_post' post.slug %}" ><p>{{ post.title }} </p></a></h3>
             <p>{{post.author}}</p>
             <small>
                 {{ post.created_on }} 
             </small>
         {% endfor %}
+    </div>
     {% endblock posts %}
 {% endblock %}

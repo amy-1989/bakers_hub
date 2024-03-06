@@ -144,7 +144,8 @@ def create_recipe_post(request):
             form.author = request.user                  
             form.save()
             messages.add_message(request, messages.SUCCESS, "Recipe request sent! Awaiting admin approval!")
-    
+            return HttpResponseRedirect('recipe_post', args=[post_id])
+
     recipe_post_form = RecipePostForm()
 
     return render(
@@ -152,4 +153,25 @@ def create_recipe_post(request):
         "recipes/create_post.html",
         {"recipe_post_form":recipe_post_form},
     )
-    
+
+
+def edit_recipe_post():
+    current_post = Post.objects.get(id=post_id)
+
+    if post.author == request.user:
+        if request.method != 'POST':
+            
+            form = RecipePostForm(instance=current_post)
+        else:
+            form = RecipePostFormForm(instance=current_post, data=request.POST)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, 'Recipe Updated!')
+            else:
+                messages.add_message(request, messages.ERROR, 'Error updating recipe!')
+
+                return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
+
+    context = {'post':post, 'form':form}
+    return render(request, 'recipes/edit_post.html', context)
+            

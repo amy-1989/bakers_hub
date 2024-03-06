@@ -1,26 +1,26 @@
 {% extends 'base.html' %} 
 {% load static %}
+{% load cloudinary %}
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="masthead">
-    <div class="container">
-        <div class="row g-0">
-            <div class="col-md-6 masthead-text">
-                <h1 class="post-title">Complete the form below to share you own recipe!</h1>
-            </div>           
-        </div>
+
+<div class="container">
+    <div class="row g-0">
+        <div class="col text-center">
+            <h1 class="post-title">Complete the form to share you own recipe!</h1>
+        </div>           
     </div>
 </div>
 <div>
-    <div class="card-body comment">
+    <div class="card-body">
       {% if user.is_authenticated %}
-      <h3>Share your Recipe!</h3>
-      <form id="RecipePostForm" method="post">
+      <form id="RecipePostForm" method="post" enctype="multipart/form-data">
         {{ recipe_post_form | crispy }}
         {% csrf_token %}
+        <div class="text-center">
         <button id="submitButton" type="submit"
-          class="btn btn-signup btn-lg">Submit</button>
+          class="btn btn-signup btn-outline-secondary btn-lg">Share Your Recipe</button></div>
       </form>
       {% else %}
       <p>Log in to Share Your Recipe</p>
