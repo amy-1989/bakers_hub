@@ -6,6 +6,14 @@ from cloudinary.models import CloudinaryField
 
 STATUS = ((0, "Draft"), (1, "Published"))
 
+RATING = (
+    (1,"⭐☆☆☆☆"),
+    (2,"⭐⭐☆☆☆"),
+    (3,"⭐⭐⭐☆☆"),
+    (4,"⭐⭐⭐⭐☆"),
+    (5,"⭐⭐⭐⭐⭐")
+    )
+
 
 class Category(models.Model):
     title = models.CharField(max_length=200, unique=True)
@@ -35,11 +43,8 @@ class Post(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self):
-        return f"This recipe {self.title} was created by {self.author}"
+        return f"{self.title} created by {self.author}"
     
-    def get_absolute_url(self):
-        return f"/post/{self.slug}/"
-
 
 class Comment(models.Model):
     post = models.ForeignKey(
@@ -57,7 +62,7 @@ class Comment(models.Model):
         ordering = ["created_on"]
 
     def __str__(self):
-        return f"Comment {self.body} by {self.author}"
+        return f"Comment: {self.body} by {self.author}"
     
   
 class Review(models.Model):
@@ -66,11 +71,7 @@ class Review(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="reviewer")
     approved = models.BooleanField(default=False)
-    rating = models.IntegerField(default=0, 
-        validators=[
-            MaxValueValidator(5),
-            MinValueValidator(0)
-        ])
+    rating = models.IntegerField(choices=RATING, default=None) 
 
     def __str__(self):
         return f"{self.post}: {self.rating}"

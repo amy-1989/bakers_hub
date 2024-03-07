@@ -1,8 +1,8 @@
 from django.shortcuts import render,  get_object_or_404, reverse
 from django.views import generic
 from django.http import HttpResponseRedirect
-from .models import Post, Category, Comment
-from .forms import CommentForm, RecipePostForm
+from .models import Post, Category, Comment, Review
+from .forms import CommentForm, RecipePostForm, RatingForm
 from django.contrib import messages
 
 
@@ -10,6 +10,7 @@ class CategoryList(generic.ListView):
     queryset = Category.objects.all()
     template_name = "recipes/index.html"
     paginate_by = 6
+
 
 def recipe_category(request, category):
     posts = Post.objects.filter(
@@ -27,8 +28,23 @@ def recipe_post(request, slug):
     post = get_object_or_404(queryset, slug=slug)
     comments = post.comments.filter(approved=True, parent__isnull=True).order_by("created_on")
     comment_count = post.comments.filter(approved=True).count()
+    ratings = post.reviews.filter(approved=True)
+
     if request.method == "POST":
+
+        rating_form = RatingForm(data=request.POST)
+
+        if rating_form.is_valid():
+            rating = rating_form.save(commit=False)
+            rating.author = request.user
+            rating.post = post
+            rating.save()
+            return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
+        else:
+            rating_form = RatingForm()
+            
         comment_form = CommentForm(data=request.POST)
+
         if comment_form.is_valid():
             parent_obj = None
             try:
@@ -47,11 +63,15 @@ def recipe_post(request, slug):
             return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
     else:
         comment_form = CommentForm()
+        rating_form = RatingForm()
+
     return render(
                 request,
                 "recipes/post.html",
                 {"post": post,
                 "comments": comments,
+                "ratings": ratings,
+                "rating_form": rating_form,
                 "comment_count": comment_count,
                 "comment_form": comment_form,}
             )
@@ -101,7 +121,8 @@ def reply_edit(request, slug, comment_id):
             messages.add_message(request, messages.ERROR, 'Error updating comment!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
-    
+
+
 def comment_delete(request, slug, comment_id):
     """
     view to delete comment
@@ -174,4 +195,6 @@ def edit_recipe_post():
 
     context = {'post':post, 'form':form}
     return render(request, 'recipes/edit_post.html', context)
-            
+
+
+

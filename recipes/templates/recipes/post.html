@@ -6,55 +6,56 @@
 {% block content %}
 <div class="container">
     <div class="row g-0">
-        <div class="col-md-6">
-            <h1 class="post-title">{{ post.title }}</h1>
-            <p class="post-subtitle">{{ post.author }} | {{ post.created_on }}</p>
+        <div class="col">
+            <h1 class="heading category text-center">{{ post.title }}</h1>
+            <p class="content text-center">Created by: {{ post.author }} | {{ post.created_on }}</p>
         </div>                           
     </div>
 </div>
-
-
 <div class="container">
     <div class="row">
         <div class="col card mb-4  mt-3 left  top">
-            <div>
+            <div class="card-body">
               {% for image in images %}
               {% cloudinary photo.image %}
               {% endfor %}
             </div>
             <div class=" col card mb-4 mt-3 left top">
+              <div class="card-body">
                 <p class="card-text">
                   Ingredients
                     {{ post.ingredients | safe }}
                 </p>
-            </div>
-            
+              </div>
+            </div>           
     <div class="row">
-          <div class="col card-body">
-              <p class="card-text">
-                Method
+          <div class="col card mb-4 mt-3 left top">
+             <div class="card-body">
+               <p class="card-text">
+                 Method
                 {{ post.content | safe }}
-              </p>
+               </p>
+              </div>
           </div>
-          <div class="card my-2">                
-              {% if user.is_authenticated and comment.author == user %}              
-              <a class="btn btn-primary" role= "button" href="{% url 'edit_recipe' post.id %}">Edit</a>
-              <a class="btn btn-primary" role= "button" href="{% url 'edit_recipe' post.id %}">Delete</a>
+          <div class="col card-body justify-content-center">                
+              {% if user.is_authenticated and post.author == user %}              
+              <a class="btn btn-secondary" role= "button" href="{% url 'edit_recipe' post.id %}">Edit</a>
+              <a class="btn btn-secondary" role= "button" href="{% url 'edit_recipe' post.id %}">Delete</a>
               {% endif %}
            </div>
         </div>
     </div>
     <!-- Displaying count of comments -->
-  <div class="row">
-    <div class="col-12">
-      <strong class="text-secondary">
-        <i class="far fa-comments"></i> {{ comment_count }}
-      </strong>
+    <div class="row">
+      <div class="col-12">
+        <strong class="text-secondary">
+          <i class="far fa-comments"></i> {{ comment_count }}
+        </strong>
+      </div>
+      <div class="col-12">
+        <hr>
+      </div>
     </div>
-    <div class="col-12">
-      <hr>
-    </div>
-  </div>
   <!-- Displaying Comments -->
   <div class="row">
     <div class="col-md-8 card mb-4  mt-3 ">
@@ -115,28 +116,59 @@
                   {% endif %}
                 </div>
               {% endfor %}
-              <!--Create Replies-->
-                <div class="card-body comment collapse" id="replyButton{{ comment.id }}">
-                {% if user.is_authenticated %}
-                <h3>Leave a reply:</h3>
-                <p>Posting as: {{ user.username }}</p>
-                <form id="commentForm" method="post"
-                  style="margin-top: 1.3em;">
-                  {{ comment_form | crispy }}
-                  {% csrf_token %}
-                  <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                  <button id="submitButton" type="submit"
-                    class="btn btn-signup btn-lg">Reply</button>
-                </form>
-                {% else %}
-                <p>Log in to leave a reply</p>
+    <!--Display Ratings-->
+    <div class="col-md-4 card mb-4  mt-3 ">
+        <h3>Ratings:</h3>
+          <div class="card-body">
+            {% for review in reviews %}
+              <div class="p-2 comments
+              {% if not review.approved and review.author == user %}
+              faded{% elif not review.approved %} d-none{% endif %}">
+                <p class="font-weight-bold">
+                  {{ review.author }} rated this recipe:</p>
+                <div>{{ review.rating}}</div>
+                {% if not review.approved and review.author == user %}
+                <p class="approval">This rating is awaiting approval</p>
                 {% endif %}
-              </div>
-          </div>       
+                <div class="card card-body my-2">                
+                {% if user.is_authenticated and review.author == user %}
+                <button class="btn btn-edit">Edit</button>
+                <button class="btn btn-delete">Delete</button>
+                {% endif %}
+          {% endfor %}
+     </div>
+    <!--Create Ratings-->
+      <div class="card-body">
+        <h3>Rate this Recipe:</h3>
+        <form id="ratingForm" method="post"
+            style="margin-top: 1.3em;">
+            {{ rating_form | crispy }}
+            {% csrf_token %}
+          <p>Rated by: {{ user.username }} </p>
+          <button id="submitButton" type="submit"
+              class="btn btn-secondary btn-lg">Submit</button>
+        </form>
+      </div>
+    <!--Create Replies-->
+      <div class="card-body comment collapse" id="replyButton{{ comment.id }}">
+        {% if user.is_authenticated %}
+        <h3>Leave a reply:</h3>
+        <p>Posting as: {{ user.username }}</p>
+        <form id="commentForm" method="post"
+          style="margin-top: 1.3em;">
+          {{ comment_form | crispy }}
+          {% csrf_token %}
+          <input type="hidden" name="parent_id" value="{{ comment.id }}">
+          <button id="submitButton" type="submit"
+            class="btn btn-signup btn-lg">Reply</button>
+        </form>
+        {% else %}
+        <p>Log in to leave a reply</p>
+        {% endif %}
+      </div>     
         {% endfor %}         
-    </div>
     <!-- Creating New Comments -->
-    <div class="col-md-4 card mb-4 mt-3">
+    <div class="col card mb-4 mt-3">
         <div class="card-body comment">
           {% if user.is_authenticated %}
           <h3>Leave a comment:</h3>
@@ -146,7 +178,7 @@
             {{ comment_form | crispy }}
             {% csrf_token %}
             <button id="submitButton" type="submit"
-              class="btn btn-signup btn-lg">Submit</button>
+              class="btn btn-secondary btn-lg">Submit</button>
           </form>
           {% else %}
           <p>Log in to leave a comment</p>

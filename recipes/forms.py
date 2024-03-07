@@ -1,4 +1,4 @@
-from .models import Comment, Post
+from .models import Comment, Post, Review
 from django import forms
 from cloudinary.forms import CloudinaryFileField
 
@@ -20,3 +20,8 @@ class RecipePostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'category', 'featured_image', 'ingredients', 'content',)
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ('rating', 'author',)
