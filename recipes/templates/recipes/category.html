@@ -2,21 +2,31 @@
 {% load cloudinary %}
 {% load static %}
 {% block page_title %}
-<div>
-<h2>{{ category.title }}</h2>
-</div>
+
 {% endblock page_title %}
 
 {% block content %}
-    {% block posts %}
-    <div>
-        {% for post in posts %}
-            <h3 class="heading"><a href="{% url 'recipe_post' post.slug %}" ><p>{{ post.title }} </p></a></h3>
-            <p>{{post.author}}</p>
-            <small>
-                {{ post.created_on }} 
-            </small>
-        {% endfor %}
+<div class="row">
+    <div class="col card-body text-center">
+    <h2 class="heading">{{ category.title }}</h2>
     </div>
+</div>
+    {% block posts %}
+<div class="col-12 mt-3 left">
+    <div class="row justify-content-center">
+            {% for post in posts %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3><a class="heading" href="{% url 'recipe_post' post.slug %}" ><p class=" heading category text-center">{{ post.title }} </p></a></h3>
+                        <p class="content text-center">Written By: {{post.author}}</p>
+                        <p class="content text-center"><small>Created on: {{ post.created_on }} 
+                        </small></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}       
+    </div>
+</div>
     {% endblock posts %}
 {% endblock %}
