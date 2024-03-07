@@ -32,7 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['8003-amy-1989-bakers-hub-qz29bz58xm.us2.codeanyapp.com',
                  '8000-amy1989-bakershub-h22ye1sgek2.ws-eu108.gitpod.io',
-                 'bakers-hub-afebe583acd6.herokuapp.com/',
+                 'bakers-hub-afebe583acd6.herokuapp.com',
                  ]
 
 
