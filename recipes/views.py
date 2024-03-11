@@ -28,17 +28,17 @@ def recipe_post(request, slug):
     post = get_object_or_404(queryset, slug=slug)
     comments = post.comments.filter(approved=True, parent__isnull=True).order_by("created_on")
     comment_count = post.comments.filter(approved=True).count()
-    ratings = post.reviews.filter(approved=True)
+    reviews = post.reviews.filter(approved=True)
 
     if request.method == "POST":
 
         rating_form = RatingForm(data=request.POST)
 
         if rating_form.is_valid():
-            rating = rating_form.save(commit=False)
-            rating.author = request.user
-            rating.post = post
-            rating.save()
+            review = rating_form.save(commit=False)
+            review.author = request.user
+            review.post = post
+            review.save()
             return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
         else:
             rating_form = RatingForm()
@@ -70,7 +70,7 @@ def recipe_post(request, slug):
                 "recipes/post.html",
                 {"post": post,
                 "comments": comments,
-                "ratings": ratings,
+                "reviews": reviews,
                 "rating_form": rating_form,
                 "comment_count": comment_count,
                 "comment_form": comment_form,}

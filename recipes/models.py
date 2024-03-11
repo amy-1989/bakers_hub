@@ -69,7 +69,7 @@ class Review(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="reviews")
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="reviewer")
+        User, on_delete=models.CASCADE, null=True, related_name="reviewer")
     approved = models.BooleanField(default=False)
     rating = models.IntegerField(choices=RATING, default=None) 
 

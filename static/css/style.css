@@ -35,3 +35,7 @@ body {
 .category {
     text-decoration: none;
 }
+
+.stars {
+    color: gold;
+}
