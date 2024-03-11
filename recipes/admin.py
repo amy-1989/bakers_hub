@@ -12,8 +12,16 @@ class PostAdmin(SummernoteModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     summernote_fields = ('content', 'ingredients')
 
+@admin.register(Review)
+class ReviewAdmin(SummernoteModelAdmin):
+    list_display = ('rating', 'approved', 'author',)
+    search_fields = ['author', 'rating',]
+    list_filter = ('approved',)
 
-# Register your models here.
-admin.site.register(Comment)
-admin.site.register(Review)
+@admin.register(Comment)
+class CommentAdmin(SummernoteModelAdmin):
+    list_display = ('body', 'approved', 'created_on',)
+    search_fields = ['approved', 'created_on',]
+    list_filter = ('body', 'approved', 'created_on',)
+
 admin.site.register(Category)

@@ -139,6 +139,20 @@ def comment_delete(request, slug, comment_id):
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
+def post_delete(request, slug, comment_id):
+    """
+    view to delete comment
+    """
+    post = get_object_or_404(Post, slug=slug)
+ 
+    if post.author == request.user:
+        post.delete()
+        messages.add_message(request, messages.SUCCESS, 'Post deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own posts!')
+
+    return HttpResponseRedirect(reverse('/', args=[slug]))
+
 
 def reply_delete(request, slug, comment_id):
     """

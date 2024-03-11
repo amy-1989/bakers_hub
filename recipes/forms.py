@@ -24,4 +24,4 @@ class RecipePostForm(forms.ModelForm):
 class RatingForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ('rating', 'author',)
+        fields = ('rating',)
