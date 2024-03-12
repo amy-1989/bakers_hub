@@ -232,3 +232,18 @@ def review_edit(request, slug, review_id):
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
+def review_delete(request, slug, review_id):
+    """
+    view to delete reviews
+    """
+    queryset = Post.objects.filter(status=1)
+    post = get_object_or_404(queryset, slug=slug)
+    review = get_object_or_404(Review, pk=review_id)
+
+    if review.author == request.user:
+        review.delete()
+        messages.add_message(request, messages.SUCCESS, 'Rating deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own ratings!')
+
+    return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
