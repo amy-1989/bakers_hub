@@ -26,9 +26,9 @@ def recipe_category(request, category):
 def recipe_post(request, slug):
     queryset = Post.objects.filter(status=1)
     post = get_object_or_404(queryset, slug=slug)
-    comments = post.comments.filter(approved=True, parent__isnull=True).order_by("created_on")
+    comments = post.comments.filter(parent__isnull=True).order_by("created_on")
     comment_count = post.comments.filter(approved=True).count()
-    reviews = post.reviews.filter(approved=True)
+    reviews = post.reviews.all()
 
     if request.method == "POST":
 
@@ -100,25 +100,22 @@ def comment_edit(request, slug, comment_id):
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
-def reply_edit(request, slug, comment_id):
+def reply_edit(request, slug, reply_id):
     """
     view to edit replies
     """
     if request.method == "POST":
+        reply = get_object_or_404(Comment, pk=reply_id)
+        reply_form = ReplyForm(data=request.POST, instance=reply)
 
-        queryset = Post.objects.filter(status=1)
-        post = get_object_or_404(queryset, slug=slug)
-        reply = get_object_or_404(Comment, pk=comment_id)
-        comment_form = CommentForm(data=request.POST, instance=comment)
-
-        if comment_form.is_valid() and reply.author == request.user:
+        if reply_form.is_valid() and reply.author == request.user:
             reply = comment_form.save(commit=False)
             reply.post = post
             reply.approved = False
             reply.save()
-            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
+            messages.add_message(request, messages.SUCCESS, 'Reply Updated!')
         else:
-            messages.add_message(request, messages.ERROR, 'Error updating comment!')
+            messages.add_message(request, messages.ERROR, 'Error updating reply!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
@@ -138,6 +135,7 @@ def comment_delete(request, slug, comment_id):
         messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
+
 
 def post_delete(request, slug, comment_id):
     """
@@ -210,5 +208,27 @@ def edit_recipe_post():
     context = {'post':post, 'form':form}
     return render(request, 'recipes/edit_post.html', context)
 
+
+def review_edit(request, slug, review_id):
+    """
+    view to edit reviews
+    """
+    if request.method == "POST":
+
+        queryset = Post.objects.filter(status=1)
+        post = get_object_or_404(queryset, slug=slug)
+        review = get_object_or_404(Review, pk=review_id)
+        rating_form = RatingForm(data=request.POST, instance=review)
+
+        if rating_form.is_valid() and review.author == request.user:
+            review = rating_form.save(commit=False)
+            review.post = post
+            review.approved = False
+            review.save()
+            messages.add_message(request, messages.SUCCESS, 'Review Updated!')
+        else:
+            messages.add_message(request, messages.ERROR, 'Error updating review!')
+
+    return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 

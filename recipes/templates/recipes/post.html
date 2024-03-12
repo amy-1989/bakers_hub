@@ -78,14 +78,14 @@
     <div class="col-md-4 card mb-4  mt-3 ">
       <h3>Ratings:</h3>
       <!--Create Ratings-->
-      <div class="card-body">
+      <div class="card-body" style="flex:none">
         {% if user.is_authenticated %}
         <h3>Rate this Recipe:</h3>
         <form id="ratingForm" method="post" style="margin-top: 1.3em;">
           {{ rating_form | crispy }}
           {% csrf_token %}
           <p>Rated by: {{ user.username }} </p>
-          <button id="submitButton" type="submit" class="btn btn-secondary">Submit</button>
+          <button id="submitReviewButton" type="submit" class="btn btn-secondary">Submit</button>
         </form>
         {% else %}
         <p>Log in to leave a rating!</p>
@@ -94,7 +94,7 @@
       <!--Display Ratings-->
       <div class="card-body">
         {% for review in reviews %}
-        <div class="p-2 card comments {% if not review.approved and review.author == user %} faded{% elif not review.approved %} d-none{% endif %}">
+        <div class="p-2 card">
           <p class="font-weight-bold">
             {{ review.author }} rated this recipe:</p>
           <div class="rating-star">
@@ -115,8 +115,8 @@
           <div class="my-2">
             {% if user.is_authenticated and review.author == user %}
             <div class="card-body text-center">
-              <button class="btn btn-secondary btn-edit">Edit</button>
-              <button class="btn btn-secondary btn-delete">Delete</button>
+              <button class="btn btn-secondary btn-rating-edit" review_id="{{review.id}}">Edit</button>
+              <button class="btn btn-secondary btn-rating-delete">Delete</button>
             </div>
             {% endif %}          
           </div>
@@ -148,9 +148,7 @@
       <!--Displaying Comments -->
       <div class="card-body">
           {% for comment in comments %}
-          <div class=" card p-2 comments
-          {% if not comment.approved and comment.author == user %}
-          faded{% elif not comment.approved %} d-none{% endif %}">
+          <div class=" card p-2">
             <p class="font-weight-bold">
               {{ comment.author }}
               <span class="font-weight-normal">
@@ -178,9 +176,7 @@
             </div>
               <!--Display Replies to Comments-->
             {% for reply in comment.replies.all %}
-            <div class="p-2 comments 
-                  {% if not comment.approved and comment.author == user %}
-                  faded{% elif not comment.approved %} d-none{% endif %}">
+            <div class="p-2">
               <p class="font-weight-bold">
                 {{ reply.author }}
                 <span class="font-weight-normal">
@@ -197,8 +193,8 @@
               {% endif %}
               <!--Reply Edit Buttons-->
               {% if user.is_authenticated and reply.author == user %}
-              <button class="btn btn-edit btn-secondary" comment_id="{{ comment.id }}">Edit</button>
-              <button class="btn btn-delete btn-secondary" comment_id="{{ comment.id }}">Delete</button>
+              <button class="btn btn-reply-edit btn-secondary" reply_id="{{ reply.id }}">Edit</button>
+              <button class="btn btn-reply-delete btn-secondary" reply_id="{{ reply.id }}">Delete</button>
               {% endif %}
             </div>
             {% endfor %}
@@ -211,15 +207,14 @@
                     {{ comment_form | crispy }}
                     {% csrf_token %}
                     <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                    <button id="submitButton" type="submit" class="btn btn-signup btn-secondary">Reply</button>
+                    <button id="replyButton" type="submit" class="btn btn-signup btn-secondary">Reply</button>
                   </form>
                   {% else %}
                   <p>Log in to leave a reply</p>
                   {% endif %}
                 </div>
               </div>
-              {% endfor %}
-            
+            {% endfor %}         
       </div>          
     </div>
     <!--Comments Container Ends Here-->
@@ -232,7 +227,7 @@
 
 
     
-  <!-- Delete confirmation modal -->
+  <!-- Delete comment confirmation modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
   aria-hidden="true">
   <div class="modal-dialog">
@@ -252,10 +247,32 @@
     </div>
   </div>
 </div>
+  <!--Delete Reply Confirmation Modal-->
+<div class="modal fade" id="deleteReplyModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete reply?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete your reply?
+        This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
 
 {% block extras %}
 <script src="{% static 'js/comments.js' %}"></script>
+<script src="{% static 'js/replies.js' %}"></script>
+<script src="{% static 'js/reviews.js' %}"></script>
 {% endblock %} 
              
                  
