@@ -45,22 +45,3 @@ for (let button of deleteButtons) {
     deleteModal.show();
   });
 }
-
-
-/**
-* Initializes deletion functionality for the provided delete buttons.
-* 
-* For each button in the `deleteButtons` collection:
-* - Retrieves the associated comment's ID upon click.
-* - Updates the `deleteConfirm` link's href to point to the 
-* deletion endpoint for the specific comment.
-* - Displays a confirmation modal (`deletePostModal`) to prompt 
-* the user for confirmation before deletion.
-*/
-for (let button of deletePostButtons) {
-  button.addEventListener("click", (e) => {
-    let postId = e.target.getAttribute("post_id");
-    deleteConfirm.href = `delete_post/${postId}`;
-    deletePostModal.show();
-  });
-}

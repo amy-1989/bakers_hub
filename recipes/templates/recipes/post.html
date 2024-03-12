@@ -49,8 +49,8 @@
     {% if user.is_authenticated and post.author == user %}
     <div class="card">
       <div class="card-body text-center">
-          <a class="btn btn-secondary" role="button" href="{% url 'edit_recipe' post.id %}">Edit</a>
-          <a class="btn btn-secondary" role="button" href="{% url 'edit_recipe' post.id %}">Delete</a>
+          <button class="btn btn-secondary btn-post-edit" post_id="{{post.id}}" >Edit</button>
+          <button class="btn btn-secondary btn-post-delete" post_id="{{post.id}}" >Delete</button>
       </div>
           {% endif %}
     </div>
@@ -254,6 +254,7 @@
 <script src="{% static 'js/comments.js' %}"></script>
 <script src="{% static 'js/replies.js' %}"></script>
 <script src="{% static 'js/reviews.js' %}"></script>
+<script src="{% static 'js/posts.js' %}"></script>
 {% endblock %} 
              
                  

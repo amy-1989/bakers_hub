@@ -100,6 +100,38 @@ def comment_edit(request, slug, comment_id):
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
+def comment_delete(request, slug, comment_id):
+    """
+    view to delete comment
+    """
+    queryset = Post.objects.filter(status=1)
+    post = get_object_or_404(queryset, slug=slug)
+    comment = get_object_or_404(Comment, pk=comment_id)
+
+    if comment.author == request.user:
+        comment.delete()
+        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
+
+    return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
+
+
+def post_delete(request, slug, post_id):
+    """
+    view to delete post
+    """
+    post = get_object_or_404(Post, slug=slug)
+ 
+    if post.author == request.user:
+        post.delete()
+        messages.add_message(request, messages.SUCCESS, 'Recipe deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own recipes!')
+
+    return HttpResponseRedirect('/')
+
+
 def reply_edit(request, slug, reply_id):
     """
     view to edit replies
@@ -120,45 +152,13 @@ def reply_edit(request, slug, reply_id):
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
-def comment_delete(request, slug, comment_id):
-    """
-    view to delete comment
-    """
-    queryset = Post.objects.filter(status=1)
-    post = get_object_or_404(queryset, slug=slug)
-    comment = get_object_or_404(Comment, pk=comment_id)
-
-    if comment.author == request.user:
-        comment.delete()
-        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
-    else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
-
-    return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
-
-
-def post_delete(request, slug, comment_id):
-    """
-    view to delete comment
-    """
-    post = get_object_or_404(Post, slug=slug)
- 
-    if post.author == request.user:
-        post.delete()
-        messages.add_message(request, messages.SUCCESS, 'Post deleted!')
-    else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own posts!')
-
-    return HttpResponseRedirect(reverse('/', args=[slug]))
-
-
-def reply_delete(request, slug, comment_id):
+def reply_delete(request, slug, reply_id):
     """
     view to delete a reply
     """
     queryset = Post.objects.filter(status=1)
     post = get_object_or_404(queryset, slug=slug)
-    reply = get_object_or_404(Comment, pk=comment_id)
+    reply = get_object_or_404(Comment, pk=reply_id)
 
     if reply.author == request.user:
         reply.delete()
@@ -188,25 +188,25 @@ def create_recipe_post(request):
     )
 
 
-def edit_recipe_post():
+def post_edit(request, slug, post_id):
+
     current_post = Post.objects.get(id=post_id)
 
-    if post.author == request.user:
-        if request.method != 'POST':
-            
-            form = RecipePostForm(instance=current_post)
+    if request.method == "POST":
+
+        review = get_object_or_404(Post, pk=post_id)
+        post_form = RecipePostForm(data=request.POST, instance=post)
+
+        if post_form.is_valid() and post.author == request.user:
+            post = rating_form.save(commit=False)
+            post.post = post
+            post.approved = False
+            post.save()
+            messages.add_message(request, messages.SUCCESS, 'Post Updated!')
         else:
-            form = RecipePostFormForm(instance=current_post, data=request.POST)
-            if form.is_valid():
-                form.save()
-                messages.add_message(request, messages.SUCCESS, 'Recipe Updated!')
-            else:
-                messages.add_message(request, messages.ERROR, 'Error updating recipe!')
+            messages.add_message(request, messages.ERROR, 'Error updating post!')
 
-                return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
-
-    context = {'post':post, 'form':form}
-    return render(request, 'recipes/edit_post.html', context)
+    return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
 def review_edit(request, slug, review_id):
