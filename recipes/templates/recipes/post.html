@@ -203,10 +203,10 @@
                   {% if user.is_authenticated %}
                   <h3>Leave a reply:</h3>
                   <p>Posting as: {{ user.username }}</p>
-                  <form class= "card-body" id="commentForm" method="post" style="margin-top: 1.3em;">
-                    {{ comment_form | crispy }}
+                  <form class= "card-body" id="replyForm" method="post" style="margin-top: 1.3em;">
+                    {{ reply_form | crispy }}
                     {% csrf_token %}
-                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <input type="hidden" name="parent_id" value="{{ reply.id }}">
                     <button id="replyButton" type="submit" class="btn btn-signup btn-secondary">Reply</button>
                   </form>
                   {% else %}

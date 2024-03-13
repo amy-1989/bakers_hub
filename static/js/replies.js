@@ -1,6 +1,6 @@
 const editReplyButtons = document.getElementsByClassName("btn-reply-edit");
 const replyText = document.getElementById("id_body");
-const replyForm = document.getElementById("commentForm");
+const replyForm = document.getElementById("replyForm");
 const submitReplyButton = document.getElementById("replyButton");
 
 const deleteReplyModal = new bootstrap.Modal(document.getElementById("deleteModal"));
