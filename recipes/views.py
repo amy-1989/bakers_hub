@@ -77,6 +77,68 @@ def recipe_post(request, slug):
             )
         
 
+def edit_post(request, post_id=None):
+
+    posts = Post.objects.all()
+
+    if post_id:
+        post = get_object_or_404(Post, pk=post_id)
+        post_form = RecipePostForm(instance=post)
+    else:
+        post_form = RecipePostForm()
+        
+    if request.method == 'POST':
+        if post_id:
+            post = get_object_or_404(Post, pk=post_id)
+            post_form = RecipePostForm(request.POST, request.FILES, instance=post)
+        else:
+            post_form = RecipePostForm(request.POST, request.FILES)
+        if post_form.is_valid():
+            post_form.save()
+            messages.success(request, "Recipe edited successfully!")
+        return HttpResponseRedirect('/')
+            
+    return render(request, 'recipes/edit_post.html', {
+        'post': post if post_id else None,
+        'post_form': post_form,
+        'posts': posts
+        })
+
+
+def post_delete(request, slug, post_id):
+    """
+    view to delete post
+    """
+    post = get_object_or_404(Post, slug=slug)
+ 
+    if post.author == request.user:
+        post.delete()
+        messages.add_message(request, messages.SUCCESS, 'Recipe deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own recipes!')
+
+    return HttpResponseRedirect('/')
+
+
+def create_recipe_post(request):
+    if request.method == "POST":
+        recipe_post_form = RecipePostForm(data=request.POST)
+        if recipe_post_form.is_valid():
+            form = recipe_post_form.save(commit=False)
+            form.author = request.user                  
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Recipe request sent! Awaiting admin approval!")
+
+    recipe_post_form = RecipePostForm()
+
+    return render(
+        request,
+        "recipes/create_post.html",
+        {"recipe_post_form":recipe_post_form},
+    )
+
+
+
 def comment_edit(request, slug, comment_id):
     """
     view to edit comments
@@ -117,21 +179,6 @@ def comment_delete(request, slug, comment_id):
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
-def post_delete(request, slug, post_id):
-    """
-    view to delete post
-    """
-    post = get_object_or_404(Post, slug=slug)
- 
-    if post.author == request.user:
-        post.delete()
-        messages.add_message(request, messages.SUCCESS, 'Recipe deleted!')
-    else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own recipes!')
-
-    return HttpResponseRedirect('/')
-
-
 def reply_edit(request, slug, reply_id):
     """
     view to edit replies
@@ -167,25 +214,6 @@ def reply_delete(request, slug, reply_id):
         messages.add_message(request, messages.ERROR, 'You can only delete your own replies!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
-
-
-def create_recipe_post(request,):
-    if request.method == "POST":
-        recipe_post_form = RecipePostForm(data=request.POST)
-        if recipe_post_form.is_valid():
-            form = recipe_post_form.save(commit=False)
-            form.author = request.user                  
-            form.save()
-            messages.add_message(request, messages.SUCCESS, "Recipe request sent! Awaiting admin approval!")
-            return HttpResponseRedirect('recipe_post', args=[post_id])
-
-    recipe_post_form = RecipePostForm()
-
-    return render(
-        request,
-        "recipes/create_post.html",
-        {"recipe_post_form":recipe_post_form},
-    )
 
 
 def review_edit(request, slug, review_id):
@@ -228,29 +256,3 @@ def review_delete(request, slug, review_id):
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
-def edit_post(request, post_id=None):
-
-    posts = Post.objects.all()
-
-    if post_id:
-        post = get_object_or_404(Post, pk=post_id)
-        post_form = RecipePostForm(instance=post)
-    else:
-        post_form = RecipePostForm()
-        
-    if request.method == 'POST':
-        if post_id:
-            post = get_object_or_404(Post, pk=post_id)
-            post_form = RecipePostForm(request.POST, request.FILES, instance=post)
-        else:
-            post_form = RecipePostForm(request.POST, request.FILES)
-        if post_form.is_valid():
-            post_form.save()
-            messages.success(request, "Recipe edited successfully!")
-        return HttpResponseRedirect('/')
-            
-    return render(request, 'recipes/edit_post.html', {
-        'post': post if post_id else None,
-        'post_form': post_form,
-        'posts': posts
-        })

@@ -21,9 +21,13 @@
     <!--Image Container-->
     <div class="col card mb-4  mt-3 left top">
         <div class="card-body">
-          {% for image in images %}
-          {% cloudinary photo.image %}
-          {% endfor %}
+          {% if "placeholder" in post.featured_image.url %}
+          <img src=""
+          alt="placeholder image">
+          {% else %}
+          <img src=" {{ post.featured_image.url }}"
+          alt="{{ post.title }}">
+          {% endif %}
         </div>
     </div>
     <!--Ingredients Container-->
