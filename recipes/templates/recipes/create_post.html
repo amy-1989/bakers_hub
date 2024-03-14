@@ -15,12 +15,12 @@
 <div>
     <div class="card-body">
       {% if user.is_authenticated %}
-      <form id="RecipePostForm" method="post" enctype="multipart/form-data">
+      <form id="recipePostForm" method="post" enctype="multipart/form-data">
         {{ recipe_post_form | crispy }}
         {% csrf_token %}
         <div class="text-center">
         <button id="submitButton" type="submit"
-          class="btn btn-signup btn-outline-secondary btn-lg">Share Your Recipe</button></div>
+          class="btn btn-create btn-outline-secondary btn-lg">Share Your Recipe</button></div>
       </form>
       {% else %}
       <p>Log in to Share Your Recipe</p>

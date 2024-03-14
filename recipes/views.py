@@ -169,7 +169,7 @@ def reply_delete(request, slug, reply_id):
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
-def create_recipe_post(request):
+def create_recipe_post(request,):
     if request.method == "POST":
         recipe_post_form = RecipePostForm(data=request.POST)
         if recipe_post_form.is_valid():
@@ -186,27 +186,6 @@ def create_recipe_post(request):
         "recipes/create_post.html",
         {"recipe_post_form":recipe_post_form},
     )
-
-
-def post_edit(request, slug, post_id):
-
-    current_post = Post.objects.get(id=post_id)
-
-    if request.method == "POST":
-
-        review = get_object_or_404(Post, pk=post_id)
-        post_form = RecipePostForm(data=request.POST, instance=post)
-
-        if post_form.is_valid() and post.author == request.user:
-            post = rating_form.save(commit=False)
-            post.post = post
-            post.approved = False
-            post.save()
-            messages.add_message(request, messages.SUCCESS, 'Post Updated!')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error updating post!')
-
-    return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
 
 def review_edit(request, slug, review_id):
@@ -247,3 +226,31 @@ def review_delete(request, slug, review_id):
         messages.add_message(request, messages.ERROR, 'You can only delete your own ratings!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
+
+
+def edit_post(request, post_id=None):
+
+    posts = Post.objects.all()
+
+    if post_id:
+        post = get_object_or_404(Post, pk=post_id)
+        post_form = RecipePostForm(instance=post)
+    else:
+        post_form = RecipePostForm()
+        
+    if request.method == 'POST':
+        if post_id:
+            post = get_object_or_404(Post, pk=post_id)
+            post_form = RecipePostForm(request.POST, request.FILES, instance=post)
+        else:
+            post_form = RecipePostForm(request.POST, request.FILES)
+        if post_form.is_valid():
+            post_form.save()
+            messages.success(request, "Recipe edited successfully!")
+        return HttpResponseRedirect('/')
+            
+    return render(request, 'recipes/edit_post.html', {
+        'post': post if post_id else None,
+        'post_form': post_form,
+        'posts': posts
+        })

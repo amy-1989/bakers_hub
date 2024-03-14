@@ -17,7 +17,7 @@
 
 <!--Display Post Content-->
 <div class="container">
-  <div class="row">
+  <div class="row" id="post{{post.id}}">
     <!--Image Container-->
     <div class="col card mb-4  mt-3 left top">
         <div class="card-body">
@@ -49,7 +49,7 @@
     {% if user.is_authenticated and post.author == user %}
     <div class="card">
       <div class="card-body text-center">
-          <button class="btn btn-secondary btn-post-edit" post_id="{{post.id}}" >Edit</button>
+          <a class="btn btn-secondary btn-post-edit" type="button" href="{% url 'edit_post' post.id %}">Edit</a>
           <button class="btn btn-secondary btn-post-delete" post_id="{{post.id}}" >Delete</button>
       </div>
           {% endif %}
