@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_summernote',
-    'recipes'
+    'recipes',
+    'about',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
