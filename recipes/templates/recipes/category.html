@@ -6,6 +6,7 @@
 {% endblock page_title %}
 
 {% block content %}
+<!--Displays all recipes in a chosen category-->
 <div class="row">
     <div class="col card-body text-center">
     <h2 class="heading">{{ category.title }}</h2>
@@ -18,10 +19,16 @@
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
+                        {% if "placeholder" in post.featured_image.url %}
+                        <img class="img-fluid mx-auto d-block" src="/static/images/placeholder.webp"
+                        alt="placeholder image">
+                        {% else %}
+                        <img class="img-fluid mx-auto d-block" src=" {{ post.featured_image.url }}"
+                        alt="{{ post.title }}">
+                        {% endif %}
                         <h3><a class="heading" href="{% url 'recipe_post' post.slug %}" ><p class=" heading category text-center">{{ post.title }} </p></a></h3>
                         <p class="content text-center">Written By: {{post.author}}</p>
-                        <p class="content text-center"><small>Created on: {{ post.created_on }} 
-                        </small></p>
+                        <p class="content text-center"><small>Created on: {{ post.created_on }}</small></p>
                     </div>
                 </div>
             </div>
