@@ -10,9 +10,7 @@ const deleteReplyConfirm = document.getElementById("deleteConfirm");
 for (let button of editReplyButtons) {
     button.addEventListener("click", (e) => {
       let replyId = e.target.getAttribute("reply_id");
-      console.log(replyId)
       let replyContent = document.getElementById(`reply${replyId}`).innerText;
-      console.log(replyContent)
       replyText.value = replyContent;
       submitReplyButton.innerText = "Update";
       replyForm.setAttribute("action", `edit_reply/${replyId}`);

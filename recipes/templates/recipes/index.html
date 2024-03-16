@@ -9,16 +9,10 @@
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <div class="image-container">
-                                <div class="image-flash">
-                                </div>
-                            </div>
                             <a href="{% url 'recipe_category' category.title %}" class="heading category">
                                 <h2 class="card-title">{{ category.title }}</h2>
                             </a>
-
                             <hr />
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -27,7 +21,6 @@
             <div class="row">
                 {% endif %}
                 {% endfor %}
-
             </div>
         </div>
     </div>
@@ -37,11 +30,11 @@
             {% if page_obj.has_previous %}
     <li>
         <a href="?page={{ page_obj.previous_page_number }}"
-          class="page-link">&laquo; PREV</a>
+          type= "button" class="btn btn-outline-secondary">&laquo; PREV</a>
     </li>
     {% endif %}
             {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+            <li><a href="?page={{ page_obj.next_page_number }}" type= "button" class="btn btn-outline-secondary"> NEXT &raquo;</a></li>
             {% endif %}
         </ul>
     </nav>
