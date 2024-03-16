@@ -25,3 +25,11 @@ class RatingForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('rating',)
+
+class CreatePostForm(forms.ModelForm):
+
+    featured_image = CloudinaryFileField()
+
+    class Meta:
+        model = Post
+        fields = ('title', 'category', 'featured_image', 'ingredients', 'content',)

@@ -2,6 +2,11 @@ body {
     background-color: rgb(255,229,250);
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .bgNavbar {
     background-color: rgb(212, 209, 210);
 }
@@ -9,7 +14,30 @@ body {
 .logo {
     font-family: 'Dancing Script', 'Lucida Handwriting', sans-serif;
     color: rgb(102,0,102);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
+}
+
+.userMessage {
+    margin: auto;
+}
+
+.heroTextContainer {
+    background-color:rgba(133, 123, 130, 0.425);
+    height: max-content;
+    width: max-content;
+    margin: auto;
+}
+
+.heroText {
+    font-family: 'Dancing Script', 'Lucida Handwriting', sans-serif;
+    color: rgb(102,0,102);
+    font-size: 12vw;
+}
+
+.subtitle {
+    color:rgb(34, 33, 33);
+    font-family: 'Dancing Script', 'Lucida Handwriting', sans-serif;
+    font-size: 2vw;
 }
 
 .heading {

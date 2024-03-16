@@ -121,24 +121,31 @@ def post_delete(request, slug, post_id):
 
 
 def create_recipe_post(request):
-    if request.method == "POST":
-        recipe_post_form = RecipePostForm(data=request.POST)
+
+    posts = Post.objects.all()
+    
+    if request.method == 'POST':
+
+        recipe_post_form = RecipePostForm(request.POST)
+
         if recipe_post_form.is_valid():
             form = recipe_post_form.save(commit=False)
-            form.author = request.user                  
+            form.featured_image = request.FILES['featured_image']
+            form.author = request.user
             form.save()
             messages.add_message(request, messages.SUCCESS, "Recipe request sent! Awaiting admin approval!")
+            return HttpResponseRedirect('/')
+        else:
+            recipe_post_form = RecipePostForm()
+    else: 
+        recipe_post_form = RecipePostForm()
 
-    recipe_post_form = RecipePostForm()
+    return render(request, 'recipes/create_post.html', {
+    'posts': posts,
+    'recipe_post_form': recipe_post_form
+    })
 
-    return render(
-        request,
-        "recipes/create_post.html",
-        {"recipe_post_form":recipe_post_form},
-    )
-
-
-
+    
 def comment_edit(request, slug, comment_id):
     """
     view to edit comments
