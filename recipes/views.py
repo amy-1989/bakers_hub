@@ -125,7 +125,7 @@ def create_recipe_post(request):
 
     if request.method == 'POST':
         recipe_post_form = RecipePostForm(request.POST, request.FILES)
-        if recipe_post_form.is_valid()
+        if recipe_post_form.is_valid():
             recipe_post = recipe_post_form.save(commit=False)
             recipe_post.featured_image = request.FILES['featured_image']
             recipe_post.author = request.user

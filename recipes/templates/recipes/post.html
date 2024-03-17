@@ -4,63 +4,67 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<!--Displays Post Heading-->
+<!-- Creates Card Container for the Recipe-->
 <div class="container">
-  <div class="row g-0">
-    <div class="col">
-      <h1 class="heading category text-center">{{ post.title }}</h1>
-      <p class="content text-center">Created by: {{ post.author }} | {{ post.created_on }}</p>
-    </div>
-  </div>
-</div>
-<!--Display Post Heading Ends Here-->
-
-<!--Display Post Content-->
-<div class="container">
-  <div class="row" id="post{{post.id}}">
-    <!--Image Container-->
-    <div class="col-md card mb-4 mt-3 left top">
-        <div class="card-body">
-          {% if "placeholder" in post.featured_image.url %}
-          <img class="img-fluid mx-auto d-block" src="/static/images/placeholder.webp"
-          alt="placeholder image">
-          {% else %}
-          <img class="img-fluid mx-auto d-block" src=" {{ post.featured_image.url }}"
-          alt="{{ post.title }}">
-          {% endif %}
+  <div class="card">
+    <!--Displays Post Heading-->
+    <div class="container">
+      <div class="row g-0">
+        <div class="col mt-4">
+          <h1 class="heading category text-center">{{ post.title }}</h1>
+          <p class="content text-center">Created by: {{ post.author }} | {{ post.created_on }}</p>
         </div>
-    </div>
-    <!--Ingredients Container-->
-    <div class="col-md card mb-4 mt-3 left top">
-          <div class="card-body">
-            <p class="card-text content">
-              <h3>Ingredients</h3>
-              {{ post.ingredients | safe }}
-            </p>
-          </div>
-    </div>  
-    <!--Method Container-->
-    <div class="card mb-4 mt-3 left top">
-        <div class="card-body">
-            <p class="card-text content">
-              <h3>Method</h3>
-              {{ post.content | safe }}
-            </p>
-        </div>
-    </div>
-  </div>
-    <!--Edit Buttons Container-->
-    {% if user.is_authenticated and post.author == user %}
-    <div class="card">
-      <div class="card-body text-center">
-          <a class="btn btn-secondary btn-post-edit" type="button" href="{% url 'edit_post' post.id %}">Edit</a>
-          <button class="btn btn-secondary btn-post-delete" post_id="{{post.id}}" >Delete</button>
       </div>
-          {% endif %}
     </div>
-</div>
+    <!--Display Post Heading Ends Here-->
 
-<!--Display Post Content Ends Here-->  
+    <!--Display Post Content-->
+    <div class="container">
+      <div class="row" id="post{{post.id}}">
+        <!--Image Container-->
+        <div class="col-md card mt-3 left top">
+            <div class="card-body">
+              {% if "placeholder" in post.featured_image.url %}
+              <img class="img-fluid mx-auto d-block" src="/static/images/placeholder.webp"
+              alt="placeholder image">
+              {% else %}
+              <img class="img-fluid mx-auto d-block" src=" {{ post.featured_image.url }}"
+              alt="{{ post.title }}">
+              {% endif %}
+            </div>
+        </div>
+        <!--Ingredients Container-->
+        <div class="col-md mt-3 left top">
+              <div class="card-body">
+                <p class="card-text content">
+                  <h3>Ingredients</h3>
+                  {{ post.ingredients | safe }}
+                </p>
+              </div>
+        </div>  
+        <!--Method Container-->
+        <div class="">
+            <div class="text-center">
+                <p class="card-text content">
+                  <h3>Method</h3>
+                  {{ post.content | safe }}
+                </p>
+                <!--Edit Buttons Container-->
+               {% if user.is_authenticated and post.author == user %}
+                <div class="text-center mb-4">
+                    <a class="btn btn-secondary btn-post-edit" type="button" href="{% url 'edit_post' post.id %}">Edit</a>
+                    <button class="btn btn-secondary btn-post-delete" post_id="{{post.id}}" >Delete</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+      </div>       
+    </div>
+  </div>
+</div>
+<!--Display Post Content Ends Here-->
+<!--Card Container Ends Here-->  
 
 <!--Displaying Ratings And Comments-->
 <div class="container">
@@ -77,7 +81,7 @@
     <!-- Displaying Comment Count Ends Here-->
 
     <!-- Ratings Container-->
-    <div class="col-md-4 card mb-4  mt-3 ">
+    <div class="col-md-4 card mb-4 mt-3">
       <h3>Ratings:</h3>
       <!--Create Ratings-->
       <div class="card-body" style="flex:none">
@@ -130,9 +134,7 @@
 
     <!--Comments Container-->
     <div class="col-md-8 card mb-4  mt-3 ">
-      <h3>Comments:</h3>
-      
-     
+      <h3>Comments:</h3>    
       <!--Displaying Comments -->
       <div class="card-body">
           {% for comment in comments %}
@@ -162,6 +164,21 @@
                 data-bs-target="#replyButton{{ comment.id }}" aria-expanded="false">Reply</button>
               {% endif %}        
             </div>
+             <!--Create Replies-->
+             <div class="card collapse" id="replyButton{{ comment.id }}">
+              {% if user.is_authenticated %}
+              <h3>Leave a reply:</h3>
+              <p>Posting as: {{ user.username }}</p>
+              <form class= "card-body" id="commentForm" method="post" style="margin-top: 1.3em;">
+                {{ comment_form | crispy }}
+                {% csrf_token %}
+                <input type="hidden" name="parent_id" value="{{ reply.id }}">
+                <button id="replyButton" type="submit" class="btn btn-signup btn-secondary">Reply</button>
+              </form>
+              {% else %}
+              <p>Log in to leave a reply</p>
+              {% endif %}
+            </div>
               <!--Display Replies to Comments-->
             {% for reply in comment.replies.all %}
             <div class="p-2">
@@ -186,22 +203,6 @@
               {% endif %}
             </div>
             {% endfor %}
-              <!--Create Replies-->
-                <div class="card comment collapse" id="replyButton{{ comment.id }}">
-                  {% if user.is_authenticated %}
-                  <h3>Leave a reply:</h3>
-                  <p>Posting as: {{ user.username }}</p>
-                  <form class= "card-body" id="replyForm" method="post" style="margin-top: 1.3em;">
-                    {{ reply_form | crispy }}
-                    {% csrf_token %}
-                    <input type="hidden" name="parent_id" value="{{ reply.id }}">
-                    <button id="replyButton" type="submit" class="btn btn-signup btn-secondary">Reply</button>
-                  </form>
-                  {% else %}
-                  <p>Log in to leave a reply</p>
-                  {% endif %}
-                </div>
-              </div>
             {% endfor %}
             <!--Create Comments-->
             <div class="col mb-4 mt-3">

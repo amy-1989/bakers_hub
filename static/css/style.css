@@ -1,3 +1,7 @@
+html {
+    overflow-x: hidden;
+}
+
 body {
     background-color: rgb(255,229,250);
 }
@@ -28,6 +32,9 @@ a {
     margin: auto;
 }
 
+.heroCard {
+    width: 90%;
+}
 .heroText {
     font-family: 'Dancing Script', 'Lucida Handwriting', sans-serif;
     color: rgb(102,0,102);
@@ -47,7 +54,7 @@ a {
 }
 
 .heroImg {
-    width: 100vw;
+    width: 90vw;
     height: auto;
 }
 
