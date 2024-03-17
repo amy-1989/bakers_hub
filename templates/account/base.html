@@ -65,7 +65,7 @@
               <a
                 class="nav-link {% if request.path == about_url %}active{% endif %}"
                 aria-current="page"
-                href="#"
+                href="{% url 'about' %}"
                 >About</a
               >
             </li>
@@ -81,11 +81,11 @@
             <li class="nav-item">
               <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page" href="{% url 'account_login' %}">Sign In</a>
             </li>
-            {% endif %}    
+            {% endif %}  
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == create_post_url %}active{% endif %}" href= "{% url 'create_post' %}">Share Your Recipes</a>
+            </li>  
           </ul>
-          <span class="justify-content-end navbar-light navbar-nav  nav-item">
-            <a class="nav-link {% if request.path == create_post_url %}active{% endif %}" href= "{% url 'create_post' %}">Share Your Recipes</a>
-          </span>
         </div>
       </div>
     </nav>
@@ -101,11 +101,14 @@
     <!-- Footer -->
     <footer class="footer mt-auto py-3 navbar-light bgNavbar">
       <p class="m-0 text-center">Made for Educational Purposes Only</p>
+      <!--Social Links-->
       <p class="m-0 text-center">
-        Follow us: <i class="fa-brands fa-facebook-f"></i>
-        <i class="fa-brands fa-x-twitter"></i>
-        <i class="fa-brands fa-instagram"></i>
+        Follow us:
+        <a href="https://www.facebook.com/" target="_blank" rel="noopener" ><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://twitter.com/" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
       </p>
+      <!--End of Social Links-->
     </footer>
 
     <script

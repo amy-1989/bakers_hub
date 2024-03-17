@@ -51,8 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-    "allauth.socialaccount.providers.google",
     'bootstrap5',
     'cloudinary_storage',
     'cloudinary',
@@ -62,20 +60,6 @@ INSTALLED_APPS = [
     'recipes',
     'about',
 ]
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
-
-SOCIALACCOUNT_LOGIN_ON_GET=True
 
 SITE_ID = 2
 

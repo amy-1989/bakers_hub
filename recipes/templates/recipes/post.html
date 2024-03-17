@@ -19,36 +19,36 @@
 <div class="container">
   <div class="row" id="post{{post.id}}">
     <!--Image Container-->
-    <div class="col card mb-4  mt-3 left top">
+    <div class="col-md card mb-4 mt-3 left top">
         <div class="card-body">
           {% if "placeholder" in post.featured_image.url %}
-          <img src="/static/images/placeholder.webp"
+          <img class="img-fluid mx-auto d-block" src="/static/images/placeholder.webp"
           alt="placeholder image">
           {% else %}
-          <img src=" {{ post.featured_image.url }}"
+          <img class="img-fluid mx-auto d-block" src=" {{ post.featured_image.url }}"
           alt="{{ post.title }}">
           {% endif %}
         </div>
     </div>
     <!--Ingredients Container-->
-    <div class="col card mb-4 mt-3 left top">
+    <div class="col-md card mb-4 mt-3 left top">
           <div class="card-body">
-            <p class="card-text">
-              Ingredients
+            <p class="card-text content">
+              <h3>Ingredients</h3>
               {{ post.ingredients | safe }}
             </p>
           </div>
-    </div>
-  </div>
+    </div>  
     <!--Method Container-->
     <div class="card mb-4 mt-3 left top">
         <div class="card-body">
-            <p class="card-text">
-              Method
+            <p class="card-text content">
+              <h3>Method</h3>
               {{ post.content | safe }}
             </p>
         </div>
     </div>
+  </div>
     <!--Edit Buttons Container-->
     {% if user.is_authenticated and post.author == user %}
     <div class="card">
@@ -62,22 +62,20 @@
 
 <!--Display Post Content Ends Here-->  
 
-<!-- Displaying Comment Count -->
-<div class="row">
-  <div class="col-12">
-    <strong class="text-secondary">
-      <i class="far fa-comments"></i> {{ comment_count }}
-    </strong>
-  </div>
-  <div class="col-12">
-     <hr>
-  </div>
-</div>
-<!-- Displaying Comment Count Ends Here-->
-
 <!--Displaying Ratings And Comments-->
 <div class="container">
   <div class="row"> 
+    <!-- Displaying Comment Count -->
+    <div class="col-12">
+      <strong class="text-secondary">
+        <i class="far fa-comments"></i> {{ comment_count }}
+      </strong>
+    </div>
+    <div class="col-12">
+       <hr>
+    </div>
+    <!-- Displaying Comment Count Ends Here-->
+
     <!-- Ratings Container-->
     <div class="col-md-4 card mb-4  mt-3 ">
       <h3>Ratings:</h3>
@@ -133,22 +131,8 @@
     <!--Comments Container-->
     <div class="col-md-8 card mb-4  mt-3 ">
       <h3>Comments:</h3>
-      <!--Create Comments-->
-      <div class="col card mb-4 mt-3">
-        <div class="card-body comment">
-          {% if user.is_authenticated %}
-          <h3>Leave a comment:</h3>
-          <p>Posting as: {{ user.username }}</p>
-          <form id="commentForm" method="post" style="margin-top: 1.3em;">
-            {{ comment_form | crispy }}
-            {% csrf_token %}
-            <button id="submitButton" type="submit" class="btn btn-secondary">Submit</button>
-          </form>
-          {% else %}
-          <p>Log in to leave a comment</p>
-          {% endif %}
-        </div>
-      </div>
+      
+     
       <!--Displaying Comments -->
       <div class="card-body">
           {% for comment in comments %}
@@ -218,7 +202,27 @@
                   {% endif %}
                 </div>
               </div>
-            {% endfor %}         
+            {% endfor %}
+            <!--Create Comments-->
+            <div class="col mb-4 mt-3">
+              <div class="text-center">
+                {% if user.is_authenticated %}
+                <button class="btn btn-secondary text-center" comment_id="{{ comment.id }}" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#commentButton{{ comment.id }}" aria-expanded="false">Add New Comment</button>
+                <div class="collapse" id="commentButton{{ comment.id }}">  
+                  <hr />    
+                  <p>Posting as: {{ user.username }}</p>                  
+                  <form id="commentForm" method="post" style="margin-top: 1.3em;">
+                    {{ comment_form | crispy }}
+                    {% csrf_token %}
+                    <button id="submitButton" type="submit" class="btn btn-secondary">Submit</button>
+                  </form>
+                </div>
+                {% else %}
+                <p>Log in to leave a comment</p>
+                {% endif %}
+              </div>
+            </div>         
       </div>          
     </div>
     <!--Comments Container Ends Here-->

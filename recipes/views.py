@@ -121,28 +121,23 @@ def post_delete(request, slug, post_id):
 
 
 def create_recipe_post(request):
-
     posts = Post.objects.all()
-    
+
     if request.method == 'POST':
-
-        recipe_post_form = RecipePostForm(request.POST)
-
-        if recipe_post_form.is_valid():
-            form = recipe_post_form.save(commit=False)
-            form.featured_image = request.FILES['featured_image']
-            form.author = request.user
-            form.save()
-            messages.add_message(request, messages.SUCCESS, "Recipe request sent! Awaiting admin approval!")
+        recipe_post_form = RecipePostForm(request.POST, request.FILES)
+        if recipe_post_form.is_valid()
+            recipe_post = recipe_post_form.save(commit=False)
+            recipe_post.featured_image = request.FILES['featured_image']
+            recipe_post.author = request.user
+            recipe_post.save()
+            messages.success(request, "Recipe request sent! Awaiting admin approval!")
             return HttpResponseRedirect('/')
-        else:
-            recipe_post_form = RecipePostForm()
-    else: 
+    else:
         recipe_post_form = RecipePostForm()
 
     return render(request, 'recipes/create_post.html', {
-    'posts': posts,
-    'recipe_post_form': recipe_post_form
+        'posts': posts,
+        'recipe_post_form': recipe_post_form
     })
 
     

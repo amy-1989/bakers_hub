@@ -4,8 +4,6 @@
 
 {% load crispy_forms_tags %}
 
-{% load account socialaccount %}
-
 {% block head_title %}{% trans "Sign In" %}{% endblock head_title %}
 
 {% block content %}
@@ -18,16 +16,8 @@
             <p>{% blocktrans %}Welcome back to Bakers Hub! To leave a comment or like a post, please log in. If
                 you
                 have not created an account yet, then <a class="link" href="{{ signup_url }}">sign up</a>
-                first.{% endblocktrans %}</p>
-                {% get_providers as socialaccount_providers %}
-
-                {% if socialaccount_providers %}
-                <p>Sign in with {% include "socialaccount/snippets/provider_list.html" with process="login" %}</p>
-                
-                <div class="socialaccount_ballot">
-                    
-                </div>
-                  
+                first.{% endblocktrans %}
+            </p>                  
         </div>
     </div>
     <div class="row">
@@ -38,17 +28,10 @@
                 {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
-                <button class="btn btn-signup right" type="submit">{% trans "Sign In" %}</button>
+                <button class="btn btn-secondary right" type="submit">{% trans "Sign In" %}</button>
             </form>
         </div>
     </div>
-    
-
-
 </div>
 
-{% include "socialaccount/snippets/login_extra.html" %}
-
-{% endif %}
-</div>
 {% endblock %}

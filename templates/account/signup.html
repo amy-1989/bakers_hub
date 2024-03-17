@@ -4,11 +4,9 @@
 
 {% load crispy_forms_tags %}
 
-{% load account socialaccount %}
-
-{% get_providers as socialaccount_providers %}
-
-{% block head_title %}{% trans "Signup" %}{% endblock head_title %}
+{% block head_title %}
+{% trans "Signup" %}
+{% endblock head_title %}
 
 {% block content %}
 <div class="container">
@@ -25,8 +23,7 @@
   </div>
   <div class="row">
     <div class="col-md-8 mt-3 offset-md-2">
-      <p> <a href="{% provider_login_url 'google' %}?next=/">Sign up with Google</a></p>
-      <p>Or register your details below:</p>
+      <p>Register your details below:</p>
       <form class="signup" id="signup_form" method="post"
         action="{% url 'account_signup' %}">
         {% csrf_token %}
@@ -35,7 +32,7 @@
         <input type="hidden" name="{{ redirect_field_name }}"
           value="{{ redirect_field_value }}" />
         {% endif %}
-        <button class="btn btn-signup right" type="submit">
+        <button class="btn btn-secondary right" type="submit">
           {% trans "Sign Up" %} &raquo;</button>
       </form>
     </div>
