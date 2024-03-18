@@ -29,11 +29,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.environ.get("DEBUG", False) == 'YES'
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['8003-amy-1989-bakers-hub-qz29bz58xm.us2.codeanyapp.com',
-                 '8000-amy1989-bakershub-z1qrot13eak.ws-eu108.gitpod.io',
-                 '8000-amy1989-bakershub-z1qrot13eak.ws-eu109.gitpod.io',
                  '8000-amy1989-bakershub-z1qrot13eak.ws-eu110.gitpod.io',
                  'bakers-hub-afebe583acd6.herokuapp.com',
                  ]
