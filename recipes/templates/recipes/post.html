@@ -4,6 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+{% include 'recipes/modal.html' %}
 <!-- Creates Card Container for the Recipe-->
 <div class="container">
   <div class="card">
@@ -43,7 +44,7 @@
               </div>
         </div>  
         <!--Method Container-->
-        <div class="">
+        <div>
             <div class="text-center">
                 <p class="card-text content">
                   <h3>Method</h3>
@@ -68,17 +69,7 @@
 
 <!--Displaying Ratings And Comments-->
 <div class="container">
-  <div class="row"> 
-    <!-- Displaying Comment Count -->
-    <div class="col-12">
-      <strong class="text-secondary">
-        <i class="far fa-comments"></i> {{ comment_count }}
-      </strong>
-    </div>
-    <div class="col-12">
-       <hr>
-    </div>
-    <!-- Displaying Comment Count Ends Here-->
+  <div class="row">   
 
     <!-- Ratings Container-->
     <div class="col-md-4 card mb-4 mt-3">
@@ -100,10 +91,10 @@
       <!--Display Ratings-->
       <div class="card-body">
         {% for review in reviews %}
-        <div class="p-2 card">
-          <p class="font-weight-bold">
+        <div class="p-2 card mb-2">
+          <p>
             {{ review.author }} rated this recipe:</p>
-          <div class="rating-star">
+          <div>
             <span title="{{ review.rating }}/5">
             <!-- By default the star is full else it is empty -->
                 <i class=" stars fa fa-star{% if review.rating < 0.5%}-o{% endif %}" aria-hidden="true"></i>
@@ -115,7 +106,7 @@
             <span><strong>( {{ review.rating }}/5 )</strong></span>
         </div>
           {% if not review.approved and review.author == user %}
-          <p class="approval">This rating is awaiting approval</p>
+          <p class="text-muted">This rating is awaiting approval</p>
           {% endif %}
           <!-- Ratings Buttons-->
           <div class="my-2">
@@ -132,29 +123,36 @@
     </div>
     <!--Ratings Container Ends Here-->
 
-    <!--Comments Container-->
-    <div class="col-md-8 card mb-4  mt-3 ">
-      <h3>Comments:</h3>    
+     <!--Comments Container-->
+    <div class="col-md-8 card mb-4 mt-3">
+      <div>
+        <h3>Comments:</h3>
+        <!-- Displaying Comment Count -->
+        <strong class="text-secondary">
+          <i class="far fa-comments"></i> {{ comment_count }}
+        </strong>
+      </div> 
       <!--Displaying Comments -->
-      <div class="card-body">
+      <div class="card-body mt-2">
           {% for comment in comments %}
-          <div class=" card p-2">
-            <p class="font-weight-bold">
+          <div class="card my-2 p-2">
+            <small>
               {{ comment.author }}
-              <span class="font-weight-normal">
-                {{ comment.created_on }}
-              </span> wrote:
-            </p>
+              wrote:
+            </small>
             <div id="comment{{ comment.id }}">
               {{ comment.body | linebreaks }}
             </div>
+            <small>
+              {{ comment.created_on }}
+            </small>
             {% if not comment.approved and comment.author == user %}
-            <p class="approval">
+            <p class="text-muted">
               This comment is awaiting approval
             </p>
             {% endif %}
             <!--Comment Buttons-->
-            <div class="card-body my-2 text-center">
+            <div class="mt-2 text-center">
               {% if user.is_authenticated and comment.author == user %}
               <button class="btn btn-edit btn-secondary" comment_id="{{ comment.id }}">Edit</button>
               <button class="btn btn-delete btn-secondary"comment_id="{{ comment.id }}">Delete</button>
@@ -162,100 +160,81 @@
               {% if comment.approved %}
               <button class="btn btn-reply btn-secondary text-center" comment_id="{{ comment.id }}" type="button" data-bs-toggle="collapse"
                 data-bs-target="#replyButton{{ comment.id }}" aria-expanded="false">Reply</button>
+              <hr />
               {% endif %}        
-            </div>
-             <!--Create Replies-->
-             <div class="card collapse" id="replyButton{{ comment.id }}">
-              {% if user.is_authenticated %}
-              <h3>Leave a reply:</h3>
-              <p>Posting as: {{ user.username }}</p>
-              <form class= "card-body" id="commentForm" method="post" style="margin-top: 1.3em;">
-                {{ comment_form | crispy }}
-                {% csrf_token %}
-                <input type="hidden" name="parent_id" value="{{ reply.id }}">
-                <button id="replyButton" type="submit" class="btn btn-signup btn-secondary">Reply</button>
-              </form>
-              {% else %}
-              <p>Log in to leave a reply</p>
-              {% endif %}
             </div>
               <!--Display Replies to Comments-->
             {% for reply in comment.replies.all %}
-            <div class="p-2">
-              <p class="font-weight-bold">
-                {{ reply.author }}
-                <span class="font-weight-normal">
-                  {{ reply.created_on }}
-                </span> wrote:
-              </p>
-              <div id="comment{{ comment.id }}">
-                {{ reply.body | linebreaks }}
-              </div>
-              {% if not reply.approved and reply.author == user %}
-              <p class="approval">
-                This reply is awaiting approval
-              </p>
-              {% endif %}
-              <!--Reply Edit Buttons-->
-              {% if user.is_authenticated and reply.author == user %}
-              <button class="btn btn-reply-edit btn-secondary" reply_id="{{ reply.id }}">Edit</button>
-              <button class="btn btn-reply-delete btn-secondary" reply_id="{{ reply.id }}">Delete</button>
-              {% endif %}
-            </div>
-            {% endfor %}
-            {% endfor %}
-            <!--Create Comments-->
-            <div class="col mb-4 mt-3">
-              <div class="text-center">
-                {% if user.is_authenticated %}
-                <button class="btn btn-secondary text-center" comment_id="{{ comment.id }}" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#commentButton{{ comment.id }}" aria-expanded="false">Add New Comment</button>
-                <div class="collapse" id="commentButton{{ comment.id }}">  
-                  <hr />    
-                  <p>Posting as: {{ user.username }}</p>                  
-                  <form id="commentForm" method="post" style="margin-top: 1.3em;">
-                    {{ comment_form | crispy }}
-                    {% csrf_token %}
-                    <button id="submitButton" type="submit" class="btn btn-secondary">Submit</button>
-                  </form>
+              <div class="p-4 pt-1">
+                <small>
+                  {{ reply.author }}
+                  wrote:
+                </small>
+                <div id="comment{{ comment.id }}">
+                  {{ reply.body | linebreaks }}
                 </div>
-                {% else %}
-                <p>Log in to leave a comment</p>
+                <small>
+                  {{ reply.created_on }}
+                </small>
+              <hr />
+                {% if not reply.approved and reply.author == user %}
+                <p class="text-muted">
+                  This reply is awaiting approval
+                </p>
+                {% endif %}
+                <!--Reply Edit Buttons-->
+                {% if user.is_authenticated and reply.author == user %}
+                <button class="btn btn-reply-edit btn-secondary" reply_id="{{ reply.id }}">Edit</button>
+                <button class="btn btn-reply-delete btn-secondary" reply_id="{{ reply.id }}">Delete</button>
                 {% endif %}
               </div>
-            </div>         
-      </div>          
+              {% endfor %}
+              <!--Create Replies-->
+                <div class="card collapse" id="replyButton{{ comment.id }}">
+                  {% if user.is_authenticated %}
+                  <h3>Leave a reply:</h3>
+                  <p>Posting as: {{ user.username }}</p>
+                  <form class= "" id="replyForm" method="post" style="margin-top: 1.3em;">
+                    {{ reply_form | crispy }}
+                    {% csrf_token %}
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <button id="replyButton" type="submit" class="btn btn-secondary">Reply</button>
+                  </form>
+                  {% else %}
+                  <p>Log in to leave a reply</p>
+                  {% endif %}
+                </div>
+          </div>
+            {% endfor %}         
+      </div> 
+      <!--Create Comments-->         
+      <div class="col mb-4 mt-3">
+        <div class="card-body">
+          {% if user.is_authenticated %}
+          <div class="text-center">
+            <button class="btn btn-secondary text-center" comment_id="{{ comment.id }}" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#commentButton{{ comment.id }}" aria-expanded="false">Add New Comment</button>
+            <div class="collapse" id="commentButton{{ comment.id }}">  
+              <hr />    
+              <h3>Leave a comment:</h3>
+              <p>Posting as: {{ user.username }}</p>
+              <form id="commentForm" method="post" style="margin-top: 1.3em;">
+                {{ comment_form | crispy }}
+                {% csrf_token %}
+                <button id="submitButton" type="submit" class="btn btn-secondary">Submit</button>
+              </form>
+            </div>
+            {% else %}
+            <p>Log in to leave a comment</p>
+            {% endif %}
+        </div>
+      </div>
+      </div>
     </div>
     <!--Comments Container Ends Here-->
   </div>
 </div>
 <!--Display Ratings and Comments Ends Here-->
-
-
-
-
-
-    
-  <!-- Delete comment confirmation modal -->
-  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="modalBodyContent">
-        Are you sure you want to delete your comment?
-        This action cannot be undone.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
-      </div>
-    </div>
-  </div>
-</div>
  
 {% endblock content %}
 
