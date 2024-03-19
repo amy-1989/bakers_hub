@@ -1,5 +1,14 @@
+html {
+    overflow-x: hidden;
+}
+
 body {
     background-color: rgb(255,229,250);
+}
+
+a {
+    text-decoration: underline;
+    color: inherit;
 }
 
 .bgNavbar {
@@ -9,7 +18,33 @@ body {
 .logo {
     font-family: 'Dancing Script', 'Lucida Handwriting', sans-serif;
     color: rgb(102,0,102);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
+}
+
+.userMessage {
+    margin: auto;
+}
+
+.heroTextContainer {
+    background-color:rgba(133, 123, 130, 0.425);
+    height: max-content;
+    width: max-content;
+    margin: auto;
+}
+
+.heroCard {
+    width: 90%;
+}
+.heroText {
+    font-family: 'Dancing Script', 'Lucida Handwriting', sans-serif;
+    color: rgb(102,0,102);
+    font-size: 12vw;
+}
+
+.subtitle {
+    color:rgb(34, 33, 33);
+    font-family: 'Dancing Script', 'Lucida Handwriting', sans-serif;
+    font-size: 2vw;
 }
 
 .heading {
@@ -19,10 +54,23 @@ body {
 }
 
 .heroImg {
-    background-image: url("hero_image.webp");
+    width: 90vw;
+    height: auto;
 }
 
 .content {
     font-family: 'Annapurna SIL', 'Times New Roman', sans-serif;
     font-weight: 400;
+}
+
+.hidden {
+    display: none;
+}
+
+.category {
+    text-decoration: none;
+}
+
+.stars {
+    color: gold;
 }
