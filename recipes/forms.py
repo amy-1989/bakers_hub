@@ -4,28 +4,30 @@ from cloudinary.forms import CloudinaryFileField
 
 
 class CommentForm(forms.ModelForm):
-    body = forms.CharField(label ="", widget = forms.Textarea(
-    attrs ={
-        'class':'form-control',
-        'placeholder':'Comment here !',
-        'rows':4,
-        'cols':50
-    }))
+    body = forms.CharField(label="", widget=forms.Textarea(attrs={
+                        'class': 'form-control',
+                        'placeholder': 'Comment here !',
+                        'rows': 4, 'cols': 50}))
+
     class Meta:
         model = Comment
         fields = ('body',)
 
+
 class ReplyForm(forms.ModelForm):
-    body = forms.CharField(label ="", widget = forms.Textarea(
-    attrs ={
-        'class':'form-control',
-        'placeholder':'Comment here !',
-        'rows':4,
-        'cols':50
-    }))
+    body = forms.CharField(label="", widget=forms.Textarea(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Comment here !',
+            'rows': 4,
+            'cols': 50
+         }))
+
     class Meta:
+
         model = Comment
         fields = ('body',)
+
 
 class RecipePostForm(forms.ModelForm):
 
@@ -33,12 +35,16 @@ class RecipePostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'featured_image', 'ingredients', 'content',)
+        fields = ('title', 'category', 'featured_image',
+                  'ingredients', 'content',)
+
 
 class RatingForm(forms.ModelForm):
+
     class Meta:
         model = Review
         fields = ('rating',)
+
 
 class CreatePostForm(forms.ModelForm):
 
@@ -46,4 +52,25 @@ class CreatePostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'featured_image', 'ingredients', 'content',)
+        fields = ('title', 'category',
+                  'featured_image', 'ingredients', 'content',)
+
+        fields = ('title', 'category', 'featured_image',
+                  'ingredients', 'content',)
+
+
+class RatingForm(forms.ModelForm):
+
+    class Meta:
+        model = Review
+        fields = ('rating',)
+
+
+class CreatePostForm(forms.ModelForm):
+
+    featured_image = CloudinaryFileField()
+
+    class Meta:
+        model = Post
+        fields = ('title', 'category', 'featured_image',
+                  'ingredients', 'content',)

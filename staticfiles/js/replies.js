@@ -17,9 +17,9 @@ const deleteReplyConfirm = document.getElementById("deleteConfirm");
     button.addEventListener("click", (e) => {
       let replyId = e.target.getAttribute("reply_id");
       document.getElementById("deleteModalLabel").innerHTML = "Delete reply?";
-      document.getElementById("modalBodyContent").innerHTML = "Are you sure you want to delete your reply? This action cannot be undone." 
+      document.getElementById("modalBodyContent").innerHTML = "Are you sure you want to delete your reply? This action cannot be undone.";
       deleteReplyConfirm.href = `delete_reply/${replyId}`;
-      deleteModal.show();
+      deleteReplyModal.show();
     });
   }
   

@@ -87,9 +87,10 @@
         <!--User info- Tells user their logged in status-->
         {% if user.is_authenticated %}
         <span class="justify-content-end navbar-light navbar-nav"><p class="text-end m-3">You are logged in as {{ user }}</p>
-        {% else %}
-        <p class="text-end m-3">You are not logged in</p>
-        {% endif %}</p></span>
+          {% else %}
+          <p class="text-end m-3">You are not logged in</p>
+          {% endif %}
+        </span>        
       </div>
     </nav>
     <!--End of Navbar-->

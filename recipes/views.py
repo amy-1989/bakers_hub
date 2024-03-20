@@ -14,7 +14,7 @@ class CategoryList(generic.ListView):
 
 def recipe_category(request, category):
     posts = Post.objects.filter(
-        category__title__icontains = category, status=1
+        category__title__icontains=category, status=1
     ).order_by("-created_on")
     context = {
         "category": category,
@@ -42,15 +42,16 @@ def recipe_post(request, slug):
             return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
         else:
             rating_form = RatingForm()
-            
+
         comment_form = CommentForm(data=request.POST)
-    
+
         if comment_form.is_valid():
             parent_obj = None
             try:
                 parent_id = int(request.POST.get('parent_id'))
             except:
                 parent_id = None
+                print('There is no parent id! This will be a new comment!')
             if parent_id:
                 parent_obj = Comment.objects.get(id=parent_id)
                 if parent_obj:
@@ -69,13 +70,13 @@ def recipe_post(request, slug):
                 request,
                 "recipes/post.html",
                 {"post": post,
-                "comments": comments,
-                "reviews": reviews,
-                "rating_form": rating_form,
-                "comment_count": comment_count,
-                "comment_form": comment_form,}
+                 "comments": comments,
+                 "reviews": reviews,
+                 "rating_form": rating_form,
+                 "comment_count": comment_count,
+                 "comment_form": comment_form, }
             )
-        
+
 
 def edit_post(request, post_id=None):
 
@@ -86,18 +87,19 @@ def edit_post(request, post_id=None):
         post_form = RecipePostForm(instance=post)
     else:
         post_form = RecipePostForm()
-        
+
     if request.method == 'POST':
         if post_id:
             post = get_object_or_404(Post, pk=post_id)
-            post_form = RecipePostForm(request.POST, request.FILES, instance=post)
+            post_form = RecipePostForm(request.POST,
+                                       request.FILES, instance=post)
         else:
             post_form = RecipePostForm(request.POST, request.FILES)
         if post_form.is_valid():
             post_form.save()
             messages.success(request, "Recipe edited successfully!")
         return HttpResponseRedirect('/')
-            
+
     return render(request, 'recipes/edit_post.html', {
         'post': post if post_id else None,
         'post_form': post_form,
@@ -110,12 +112,13 @@ def post_delete(request, slug, post_id):
     view to delete post
     """
     post = get_object_or_404(Post, slug=slug)
- 
+
     if post.author == request.user:
         post.delete()
         messages.add_message(request, messages.SUCCESS, 'Recipe deleted!')
     else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own recipes!')
+        messages.add_message(request, messages.ERROR,
+                             'You can only delete your own recipes!')
 
     return HttpResponseRedirect('/')
 
@@ -130,7 +133,8 @@ def create_recipe_post(request):
             recipe_post.featured_image = request.FILES['featured_image']
             recipe_post.author = request.user
             recipe_post.save()
-            messages.success(request, "Recipe request sent! Awaiting admin approval!")
+            messages.success(request,
+                             "Recipe request sent! Awaiting admin approval!")
             return HttpResponseRedirect('/')
     else:
         recipe_post_form = RecipePostForm()
@@ -153,7 +157,8 @@ def comment_delete(request, slug, comment_id):
         comment.delete()
         messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
     else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
+        messages.add_message(request, messages.ERROR,
+                             'You can only delete your own comments!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
@@ -170,7 +175,8 @@ def reply_delete(request, slug, reply_id):
         reply.delete()
         messages.add_message(request, messages.SUCCESS, 'Reply deleted!')
     else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own replies!')
+        messages.add_message(request, messages.ERROR,
+                             'You can only delete your own replies!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
@@ -193,7 +199,8 @@ def review_edit(request, slug, review_id):
             review.save()
             messages.add_message(request, messages.SUCCESS, 'Review Updated!')
         else:
-            messages.add_message(request, messages.ERROR, 'Error updating review!')
+            messages.add_message(request, messages.ERROR,
+                                 'Error updating review!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
@@ -210,8 +217,7 @@ def review_delete(request, slug, review_id):
         review.delete()
         messages.add_message(request, messages.SUCCESS, 'Rating deleted!')
     else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own ratings!')
+        messages.add_message(request, messages.ERROR,
+                             'You can only delete your own ratings!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
-
-

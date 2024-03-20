@@ -19,7 +19,7 @@ for (let button of deletePostButtons) {
     document.getElementById("deleteModalLabel").innerHTML = "Delete Recipe?";
     document.getElementById("modalBodyContent").innerHTML = "Are you sure you want to delete your Recipe? This action cannot be undone." 
     deletePostConfirm.href = `delete_post/${postId}`;
-    deleteModal.show();
+    deletePostModal.show();
   });
 }
   

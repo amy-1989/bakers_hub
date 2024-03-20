@@ -44,7 +44,6 @@ for (let button of deleteReviewButtons) {
       document.getElementById("deleteModalLabel").innerHTML = "Delete rating?";
       document.getElementById("modalBodyContent").innerHTML = "Are you sure you want to delete your rating? This action cannot be undone." 
       deleteReviewConfirm.href = `delete_review/${reviewId}`;
-      deleteModal.show();
+      deleteReviewModal.show();
     });
   }
-  
