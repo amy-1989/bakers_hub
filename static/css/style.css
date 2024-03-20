@@ -63,8 +63,8 @@ a {
     font-weight: 400;
 }
 
-.hidden {
-    display: none;
+.imgAbout {
+    border-radius: 50%;
 }
 
 .category {

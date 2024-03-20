@@ -9,21 +9,22 @@
     <div class="col-md-4 text-center">
       <div >
         {% if "placeholder" in about.profile_image.url %}
-        <img class="img-fluid" src=""
+        <img class="img-fluid imgAbout" src=""
         alt="placeholder image">
         {% else %}
-        <img class="img-fluid" src=" {{ about.profile_image.url }}"
+        <img class="img-fluid imgAbout" src=" {{ about.profile_image.url }}"
         alt="{{ about.title }}">
         {% endif %}
       </div>
     </div>
-    <div class="col-md-8">
-      <h2>{{ about.title }}</h2>
-      {{ about.content | safe }}
-      <div class="text-center">
+    <div class="col-md-8 card text-center heading">
+      <h2 class="mb-2 p-3">{{ about.title }}</h2>
+      <p>{{ about.content | safe }}</p>
+      <div class="text-center p-2">
         <button class="btn btn-secondary text-center" type="button" data-bs-toggle="collapse"
                       data-bs-target="#contactButton" aria-expanded="false">Contact Us</button>
       </div>
+    </div>
       <div class="collapse" id="contactButton">
         <form method="post">
           {{ contact_form | crispy }}
@@ -35,7 +36,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col text-right">
+    <div class="col text-right p-2">
         <p class="text-end"><em>Updated on: {{ about.updated_on }}</em></p>
     </div>
   </div>
