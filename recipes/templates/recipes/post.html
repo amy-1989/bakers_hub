@@ -132,10 +132,32 @@
           <i class="far fa-comments"></i> {{ comment_count }}
         </strong>
       </div> 
+      <!--Create Comments-->  
+      <div class="col mb-4 mt-3">
+        <div class="card-body">
+          <div class="text-center">
+            {% if user.is_authenticated %}
+            <div> 
+              <hr />    
+              <h3>Leave a comment:</h3>
+              <p>Posting as: {{ user.username }}</p>
+              <form id="commentForm" method="post" style="margin-top: 1.3em;">
+                {{ comment_form | crispy }}
+                {% csrf_token %}
+                <button id="submitButton" type="submit" class="btn btn-secondary">Submit</button>
+              </form>
+            </div>
+            {% else %}
+            <p>Log in to leave a comment</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
       <!--Displaying Comments -->
       <div class="card-body mt-2">
           {% for comment in comments %}
-          <div class="card my-2 p-2">
+          <div class="card my-2 p-2  {% if not comment.approved and comment.author == user %}
+          faded{% elif not comment.approved %} d-none{% endif %}">
             <small>
               {{ comment.author }}
               wrote:
@@ -154,23 +176,22 @@
             <!--Comment Buttons-->
             <div class="mt-2 text-center">
               {% if user.is_authenticated and comment.author == user %}
-              <button class="btn btn-edit btn-secondary" comment_id="{{ comment.id }}">Edit</button>
               <button class="btn btn-delete btn-secondary"comment_id="{{ comment.id }}">Delete</button>
               {% endif %}
               {% if comment.approved %}
-              <button class="btn btn-reply btn-secondary text-center" comment_id="{{ comment.id }}" type="button" data-bs-toggle="collapse"
+              <button class="btn btn-reply btn-secondary text-center" type="button" data-bs-toggle="collapse"
                 data-bs-target="#replyButton{{ comment.id }}" aria-expanded="false">Reply</button>
               <hr />
               {% endif %}        
             </div>
-              <!--Display Replies to Comments-->
-            {% for reply in comment.replies.all %}
+            <!--Display Replies to Comments-->
+              {% for reply in comment.replies.all %}
               <div class="p-4 pt-1">
                 <small>
                   {{ reply.author }}
                   wrote:
                 </small>
-                <div id="comment{{ comment.id }}">
+                <div id="reply{{ reply.id }}">
                   {{ reply.body | linebreaks }}
                 </div>
                 <small>
@@ -182,54 +203,31 @@
                   This reply is awaiting approval
                 </p>
                 {% endif %}
-                <!--Reply Edit Buttons-->
+                <!--Reply Delete Buttons-->
                 {% if user.is_authenticated and reply.author == user %}
-                <button class="btn btn-reply-edit btn-secondary" reply_id="{{ reply.id }}">Edit</button>
-                <button class="btn btn-reply-delete btn-secondary" reply_id="{{ reply.id }}">Delete</button>
+              <button class="btn btn-reply-delete btn-secondary" reply_id="{{ reply.id }}">Delete</button>
+              {% endif %}
+              </div> 
+              {% endfor %}  
+              <!--Create Replies-->
+              <div class="card collapse" id="replyButton{{ comment.id }}">
+                {% if user.is_authenticated %}
+                <h3>Leave a reply:</h3>
+                <p>Posting as: {{ user.username }}</p>
+                <form  id="commentForm" method="post" style="margin-top: 1.3em;">
+                  {{ comment_form | crispy }}
+                  {% csrf_token %}
+                  <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                  <button id="replyButton" type="submit" class="btn btn-secondary">Add Reply</button>
+                </form>
+                {% else %}
+                <p>Log in to leave a reply</p>
                 {% endif %}
               </div>
-              {% endfor %}
-              <!--Create Replies-->
-                <div class="card collapse" id="replyButton{{ comment.id }}">
-                  {% if user.is_authenticated %}
-                  <h3>Leave a reply:</h3>
-                  <p>Posting as: {{ user.username }}</p>
-                  <form class= "" id="replyForm" method="post" style="margin-top: 1.3em;">
-                    {{ reply_form | crispy }}
-                    {% csrf_token %}
-                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                    <button id="replyButton" type="submit" class="btn btn-secondary">Reply</button>
-                  </form>
-                  {% else %}
-                  <p>Log in to leave a reply</p>
-                  {% endif %}
-                </div>
           </div>
-            {% endfor %}         
+            {% endfor %}
+                   
       </div> 
-      <!--Create Comments-->         
-      <div class="col mb-4 mt-3">
-        <div class="card-body">
-          {% if user.is_authenticated %}
-          <div class="text-center">
-            <button class="btn btn-secondary text-center" comment_id="{{ comment.id }}" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#commentButton{{ comment.id }}" aria-expanded="false">Add New Comment</button>
-            <div class="collapse" id="commentButton{{ comment.id }}">  
-              <hr />    
-              <h3>Leave a comment:</h3>
-              <p>Posting as: {{ user.username }}</p>
-              <form id="commentForm" method="post" style="margin-top: 1.3em;">
-                {{ comment_form | crispy }}
-                {% csrf_token %}
-                <button id="submitButton" type="submit" class="btn btn-secondary">Submit</button>
-              </form>
-            </div>
-            {% else %}
-            <p>Log in to leave a comment</p>
-            {% endif %}
-        </div>
-      </div>
-      </div>
     </div>
     <!--Comments Container Ends Here-->
   </div>

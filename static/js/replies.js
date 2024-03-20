@@ -22,6 +22,8 @@ for (let button of editReplyButtons) {
     button.addEventListener("click", (e) => {
       let replyId = e.target.getAttribute("reply_id");
       let replyContent = document.getElementById(`reply${replyId}`).innerText;
+      console.log(replyId);
+      console.log(replyContent);
       replyText.value = replyContent;
       submitReplyButton.innerText = "Update";
       replyForm.setAttribute("action", `edit_reply/${replyId}`);

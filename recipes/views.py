@@ -2,7 +2,7 @@ from django.shortcuts import render,  get_object_or_404, reverse
 from django.views import generic
 from django.http import HttpResponseRedirect
 from .models import Post, Category, Comment, Review
-from .forms import CommentForm, RecipePostForm, RatingForm
+from .forms import CommentForm, RecipePostForm, RatingForm, ReplyForm
 from django.contrib import messages
 
 
@@ -44,7 +44,7 @@ def recipe_post(request, slug):
             rating_form = RatingForm()
             
         comment_form = CommentForm(data=request.POST)
-
+    
         if comment_form.is_valid():
             parent_obj = None
             try:
@@ -140,29 +140,6 @@ def create_recipe_post(request):
         'recipe_post_form': recipe_post_form
     })
 
-    
-def comment_edit(request, slug, comment_id):
-    """
-    view to edit comments
-    """
-    if request.method == "POST":
-
-        queryset = Post.objects.filter(status=1)
-        post = get_object_or_404(queryset, slug=slug)
-        comment = get_object_or_404(Comment, pk=comment_id)
-        comment_form = CommentForm(data=request.POST, instance=comment)
-
-        if comment_form.is_valid() and comment.author == request.user:
-            comment = comment_form.save(commit=False)
-            comment.post = post
-            comment.approved = False
-            comment.save()
-            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error updating comment!')
-
-    return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
-
 
 def comment_delete(request, slug, comment_id):
     """
@@ -177,26 +154,6 @@ def comment_delete(request, slug, comment_id):
         messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
     else:
         messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
-
-    return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
-
-
-def reply_edit(request, slug, reply_id):
-    """
-    view to edit replies
-    """
-    if request.method == "POST":
-        reply = get_object_or_404(Comment, pk=reply_id)
-        reply_form = ReplyForm(data=request.POST, instance=reply)
-
-        if reply_form.is_valid() and reply.author == request.user:
-            reply = comment_form.save(commit=False)
-            reply.post = post
-            reply.approved = False
-            reply.save()
-            messages.add_message(request, messages.SUCCESS, 'Reply Updated!')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error updating reply!')
 
     return HttpResponseRedirect(reverse('recipe_post', args=[slug]))
 
