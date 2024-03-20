@@ -49,7 +49,7 @@ def recipe_post(request, slug):
             parent_obj = None
             try:
                 parent_id = int(request.POST.get('parent_id'))
-            except:
+            except TypeError:
                 parent_id = None
                 print('There is no parent id! This will be a new comment!')
             if parent_id:

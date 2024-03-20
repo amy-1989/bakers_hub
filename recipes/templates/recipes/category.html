@@ -26,7 +26,7 @@
                         <img class="img-fluid mx-auto d-block" src=" {{ post.featured_image.url }}"
                         alt="{{ post.title }}">
                         {% endif %}
-                        <h3><a class="heading" href="{% url 'recipe_post' post.slug %}" ><p class=" heading category text-center">{{ post.title }} </p></a></h3>
+                        <h3 class="text-center"><a class="heading category" href="{% url 'recipe_post' post.slug %}">{{ post.title }}</a></h3>
                         <p class="content text-center">Written By: {{post.author}}</p>
                         <p class="content text-center"><small>Created on: {{ post.created_on }}</small></p>
                     </div>

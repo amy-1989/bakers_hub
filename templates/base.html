@@ -86,11 +86,11 @@
         </div>
         <!--User info- Tells user their logged in status-->
         {% if user.is_authenticated %}
-        <span class="justify-content-end navbar-light navbar-nav"><p class="text-end m-3">You are logged in as {{ user }}</p>
+        <div class="justify-content-end navbar-light navbar-nav text-end m-3">You are logged in as {{ user }}
           {% else %}
-          <p class="text-end m-3">You are not logged in</p>
+          You are not logged in
           {% endif %}
-        </span>        
+        </div>        
       </div>
     </nav>
     <!--End of Navbar-->

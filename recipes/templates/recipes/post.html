@@ -37,19 +37,19 @@
         <!--Ingredients Container-->
         <div class="col-md mt-3 left top">
               <div class="card-body">
-                <p class="card-text content">
+                <div class="card-text content">
                   <h3>Ingredients</h3>
                   {{ post.ingredients | safe }}
-                </p>
+                </div>
               </div>
         </div>  
         <!--Method Container-->
         <div>
             <div class="text-center">
-                <p class="card-text content">
+                <div class="card-text content">
                   <h3>Method</h3>
                   {{ post.content | safe }}
-                </p>
+                </div>
                 <!--Edit Buttons Container-->
                {% if user.is_authenticated and post.author == user %}
                 <div class="text-center mb-4">
