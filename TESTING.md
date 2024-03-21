@@ -15,18 +15,15 @@
   - [Site Navigation](#site-navigation)
   - [Home Page](#home-page)
   - [Category Page](#category-page)
-  - [Article Preview Card](#article-preview-card)
-  - [Post Detail Page](#post-detail-page)
-  - [Comment](#comment)
-  - [Add Post Page](#add-post-page)
+  - [Post Page](#post-page)
+  - [About Page](#about-page)
+  - [Create Post Page](#create-post-page)
   - [Edit Post Page](#edit-post-page)
-  - [Delete Confirmation Modal](#delete-confirmation-modal)
-  - [Profile Page](#profile-page)
-  - [Update Profile Page](#update-profile-page)
   - [Sign Up Page](#sign-up-page)
   - [Sign In Page](#sign-in-page)
-  - [Log Out Page](#log-out-page)
-  - [Code of Conduct Page](#code-of-conduct-page)
+  - [Delete Confirmation Modal](#delete-confirmation-modal)
+  - [Sign Out Page](#sign-out-page)
+  -
 
 - [Bugs](#bugs)
 
@@ -78,7 +75,7 @@ The HTML validation errors are attributed to the Summernote widget and Django fr
 ### CSS
 
 The CSS stylesheet was run through the [W3C CSS Validator](https://jigsaw.w3.org/css-validator/)
-Test Results CSS <mark>PASS<mark>
+Test Results CSS: PASS
 <img src="./documents/validation/css_validation.webp">
 
 ### JavaScript
@@ -145,25 +142,126 @@ It is noted that Google Fonts, and Font Awesome icons are affecting the pages pe
 
 ### Site Navigation
 
+| Element                | Action  | Expected Behaviour                           | Result |
+| ---------------------- | ------- | -------------------------------------------- | ------ |
+| Home Link              | Click   | Redirects to Home page                       | PASS   |
+| About Link             | Click   | Redirects to About page                      | PASS   |
+| Sign Up Link           | Click   | Redirects to Sign Up page                    | PASS   |
+| Sign In Link           | Click   | Redirects to Sign In page                    | PASS   |
+| Share Your Recipe Link | Click   | Redirects to Create post page                | PASS   |
+| Hamburger Menu         | Click   | Displays a dropdown list of all navbar links | PASS   |
+| Sign Up Link           | Display | Displays for non-authenticated users         | PASS   |
+| Sign In Link           | Display | Displays for non-authenticated users         | PASS   |
+| Sign Out Link          | Display | Displays for authenticated users only        | PASS   |
+| Footer Socials         | Click   | Opens relevant social page in new tab        | PASS   |
+| Footer Socials         | Hover   | Highlight blue to indicate a link            | PASS   |
+
 ### Home Page
+
+| Element        | Action  | Expected Behaviour                    | Result |
+| -------------- | ------- | ------------------------------------- | ------ |
+| Category cards | Display | Display in pages of 6 cards           | PASS   |
+| Category Links | Hover   | Highlight blue to indicate link       | PASS   |
+| Category Links | Click   | Redirects to the chosen category page | PASS   |
 
 ### Category Page
 
+| Element      | Action  | Expected Behaviour                               | Result |
+| ------------ | ------- | ------------------------------------------------ | ------ |
+| Recipe Cards | Display | Displays all recipe cards in the chosen category | PASS   |
+| Recipe Links | Hover   | Highlight blue to indicate link                  | PASS   |
+| Recipe Links | Click   | Redirects to the chosen recipes post page        | PASS   |
+
 ### Post Page
+
+| Element                      | Action  | Expected Behaviour                                                               | Result |
+| ---------------------------- | ------- | -------------------------------------------------------------------------------- | ------ |
+| Recipe                       | Display | Displays the chosen recipes content                                              | PASS   |
+| Ratings Cards                | Display | Users see approved ratings                                                       | PASS   |
+| Rating Form                  | Display | Non-authenticated users see message prompting log in to leave rating             | PASS   |
+| Comment Form                 | Display | Non-authenticates users see message prompting a log in to leave a comment        | PASS   |
+| Comment Section              | Display | Users can read approved comments and replies                                     | PASS   |
+| Edit Ratings Button          | Display | Authenticated Users only can see this button                                     | PASS   |
+| Delete Ratings Button        | Display | Authenticated Users only can see this button                                     | PASS   |
+| Delete Comments Button       | Display | Authenticated Users only can see this button                                     | PASS   |
+| Reply Button                 | Display | Authenticated Users only can see this button, only displays on approved comments | PASS   |
+| Comments Form                | Display | Authenticated Users only can see this form                                       | PASS   |
+| Rating Form                  | Display | Authenticated Users only can see this form                                       | PASS   |
+| Star Rating Widget           | Click   | Dropdown menu allowing user to select number of stars to rate                    | PASS   |
+| Rating Section Submit Button | Click   | Submits user rating for recipe                                                   | PASS   |
+| Add Comment Submit Button    | Click   | Adds comment to the page                                                         | PASS   |
+| Edit Ratings Button          | Click   | Allows user to edit rating using the dropdown star widget rating                 | PASS   |
+| Delete Ratings Button        | Click   | Renders the delete confirmation modal                                            | PASS   |
+| Delete Comments Button       | Click   | Renders the delete confirmation modal                                            | PASS   |
+| Edit Post Button             | Click   | Redirects to the edit post page                                                  | PASS   |
+| Delete Post Button           | Click   | Renders the delete confirmation modal                                            | PASS   |
+| Edit Post Button             | Display | Displays to the authenticated author of the post only                            | PASS   |
+| Delete Post Button           | Display | Displays to the authenticated author of the post only                            | PASS   |
+| Reply Button                 | Click   | Renders the reply form                                                           | PASS   |
+| Add Reply Button             | Click   | Submits reply                                                                    | PASS   |
 
 ### About Page
 
+| Element           | Action  | Expected Behaviour                         | Result |
+| ----------------- | ------- | ------------------------------------------ | ------ |
+| Contact Us Button | Hover   | Darkens when hovered over                  | PASS   |
+| Contact Us Form   | Display | Displays to users below after button click | PASS   |
+| Submit Button     | Hover   | Darkens when hovered over                  | PASS   |
+| Submit Button     | Click   | Submits contact form                       | PASS   |
+| Contact Us Button | Click   | Displays the contact us form               | PASS   |
+
 ### Create Post Page
+
+| Element          | Action  | Expected Behaviour                                      | Result |
+| ---------------- | ------- | ------------------------------------------------------- | ------ |
+| Create Post Form | Display | Displays to authenticated users                         | PASS   |
+| Create Post Form | Display | Unauthenticates users see a message prompting a sign in | PASS   |
+| Submit Button    | Hover   | Darkens when hovered over                               | PASS   |
+| Submit Button    | Click   | Submits create post form                                | PASS   |
 
 ### Edit Post Page
 
+| Element              | Action  | Expected Behaviour                                            | Result |
+| -------------------- | ------- | ------------------------------------------------------------- | ------ |
+| Form                 | Display | Displays with fields full with previous submitted information | PASS   |
+| Update Recipe Button | Click   | Submits edited recipe                                         | PASS   |
+| Update Recipe Button | Hover   | Darkens when hovered over                                     | PASS   |
+| Invalid inputs       | Submit  | User is directed to the problem field to fix                  | PASS   |
+
 ### Sign Up Page
+
+| Element        | Action | Expected Behaviour                                                               | Result |
+| -------------- | ------ | -------------------------------------------------------------------------------- | ------ |
+| Sign In Link   | Hover  | Highlights blue to indicate a link                                               | PASS   |
+| Sign Up Button | Click  | Creates an authenticated user, displays you are logged in as message             | PASS   |
+| Sign Up Button | Hover  | Darkens when hovered over                                                        | PASS   |
+| Invalid inputs | Submit | User is prompted to fill in empty fields/choose different usernames/email inputs | PASS   |
 
 ### Sign In Page
 
+| Element              | Action | Expected Behaviour                                                   | Result |
+| -------------------- | ------ | -------------------------------------------------------------------- | ------ |
+| Sign Up Link         | Hover  | Highlights blue to indicate a link                                   | PASS   |
+| Sign In Button       | Click  | Logs an authenticated user in, displays you are logged in as message | PASS   |
+| Sign In Button       | Hover  | Darkens when hovered over                                            | PASS   |
+| Invalid inputs       | Submit | User is prompted to fix errors with messages indicating the error    | PASS   |
+| Remember me checkbox | Click  | Saves user data for smoother login upon returning in same browser    | PASS   |
+
 ### Delete Confirmation Modal
 
+| Element       | Action | Expected Behaviour                          | Result |
+| ------------- | ------ | ------------------------------------------- | ------ |
+| Close Button  | Hover  | Darkens when hovered over                   | PASS   |
+| Delete Button | Hover  | Darkens when hovered over                   | PASS   |
+| Close Button  | Click  | Closes the modal box, no delete takes place | PASS   |
+| Delete Button | Click  | Chosen Item is deleted                      | PASS   |
+
 ### Sign Out Page
+
+| Element         | Action | Expected Behaviour                                                          | Result |
+| --------------- | ------ | --------------------------------------------------------------------------- | ------ |
+| Sign Out Button | Hover  | Darkens when hovered over                                                   | PASS   |
+| Sign Out Button | Click  | Signs out the user, displays message letting user know they have logged out | PASS   |
 
 ## Bugs
 
