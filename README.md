@@ -250,7 +250,7 @@ I would like to implement the following features in the future:
 
 ## Testing
 
-Due to the large size of the testing section, I created a separate file to store all the tests and results. It can be found here [TESTING.md](https://github.com/amy-1989/bakers_hub/blob/main/Testing.md)
+Due to the large size of the testing section, I created a separate file to store all the tests and results. It can be found here [TESTING.md](https://github.com/amy-1989/bakers_hub/blob/main/TESTING.md)
 
 ## Deployment
 
